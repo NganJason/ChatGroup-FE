@@ -1,5 +1,5 @@
 import React from "react"
-import Text from "../../../../_shared/Text/Text";
+import Text from "../../../../_shared/Components/Text/Text";
 
 type MessageProps = {
     name?: string;

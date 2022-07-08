@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "antd";
 import { PlusOutlined, DownOutlined } from "@ant-design/icons";
 
-import Text from "../../../_shared/Text/Text";
+import Text from "../../../_shared/Components/Text/Text";
 
 const Channel = (): JSX.Element => {
   return (
@@ -28,7 +28,7 @@ const Sidebar = (): JSX.Element => (
     </div>
 
     <div className="content">
-      {[1, 2, 3, 4].map(() => {
+      {[1, 2, 3, 4,5,6,7,8,9,1,2,3,4,5,6].map(() => {
         return Channel();
       })}
     </div>
