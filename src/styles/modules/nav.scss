@@ -1,8 +1,31 @@
 .nav {
     height: 100%;
+    padding: 0 1rem;
+
     display: flex;
+    align-items: center;
     
-    p {
-        height: 100%;
+    .icon {
+        height: 30px;
+        width: 30px;
+        margin-right: 1rem;
+
+        display: none;
+
+        cursor: pointer;
     }
+
+    .icon:hover {
+        transform: scale(1.1);
+    }
+
+    p {
+        margin: auto 0;
+    }
+}
+@media only screen and (max-width: 600px) {
+  .nav .icon {
+    display: flex;
+    align-items: center;
+  }
 }

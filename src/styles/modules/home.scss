@@ -1,25 +1,17 @@
 .home {
-    
+   .sider.disable {
+        display: none;
+   } 
 
     .body {
         height: 100vh;
+        display: flex;
+        flex-direction: column;
 
         .header {
-            height: 60px;
-            z-index: 1;
+            min-height: 60px;
+            max-height: 60px;
             position: relative;
         }
-
-        .content {
-            height: auto;
-        }
     }
-}
-
-@media only screen and (max-width: 600px) {
-  .home {
-    .sider {
-        display: none;
-    }
-  }
 }
