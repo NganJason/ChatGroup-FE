@@ -1,0 +1,107 @@
+.App {
+    background-color: #FFFFFF;
+
+    .bg-one { background-color: #120F13; }
+    .bg-two { background-color: #252329; }
+    .bg-three { background-color: #0B090C; }
+    .bg-four { background-color: #3C393F; }
+
+    .shadow {
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn {
+        &.primary {
+            background-color: #252329;
+            color: #F2F2F2;
+        }
+
+        &.secondary {
+            background-color: #FFFFFF;
+            border: 1px solid #828282;
+        }
+
+        &.inherit {
+            background-color: inherit;
+        }
+    }
+
+    .text {
+        &.primary {
+            color: #BDBDBD;
+        }
+
+        &.secondary {
+            color: #FFFFFF;
+        }
+
+        &.tertiary {
+            color: #828282;
+        }
+
+        &.alert {
+            color: #EB5757;
+        }
+    }
+
+    .icon {
+        &.primary {
+            color: #BDBDBD;
+        }
+
+        &.secondary {
+            color: #4F4F4F;
+        }
+
+        &.tertiary {
+            color: #EB5757;
+        }
+    }
+}
+
+.App.dark {
+    background-color: #333333;
+    .bg-one { background-color: #2B2B2B; }
+    .bg-hover:hover {
+        background-color: #444444;
+    }
+
+    .btn {
+        &.primary {
+            background-color: #2F80ED;
+            color: #FFFFFF;
+        }
+
+        &.inherit {
+            background-color: inherit;
+        }
+    }
+
+    .text {
+        &.primary {
+            color: #E0E0E0;
+        }
+
+        &.secondary {
+            color: #828282;
+        }
+
+        &.tertiary {
+            color: #E0E0E0;
+        }
+    }
+
+    .material-icons {
+        &.theme-toggler {
+            color: #FFC107;
+        }
+
+        &.primary {
+            color: #FFFFFF;
+        }
+
+        &.secondary {
+            color: #E0E0E0;
+        }
+    }
+}

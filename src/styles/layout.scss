@@ -1,0 +1,12 @@
+.App {
+    height: auto;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    overflow: auto;
+    scroll-behavior: smooth;
+}
