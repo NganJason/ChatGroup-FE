@@ -1,9 +1,26 @@
 import React from "react";
+import type { Property } from '../../../node_modules/csstype'
 
-function Text({
+type TextProps = {
+  align?: Property.TextAlign;
+  color?: string;
+  size?: string;
+  mgTop?: string;
+  mgBtm?: string;
+  mgLeft?: string;
+  mgRight?: string;
+  bd?: string;
+  inline?: any;
+  hover?: any;
+  cursor?: any;
+  width?: string;
+  children?: JSX.Element | any;
+};
+function Text(props: TextProps) {
+  const {
   align,
-  size,
   color,
+  size,
   mgTop,
   mgBtm,
   mgLeft,
@@ -14,14 +31,14 @@ function Text({
   cursor,
   width,
   children,
-  ...props
-}) {
-  const styles = {
+} = props
+
+  const styles: React.CSSProperties = {
     width: `${width ? width : ""}`,
     textAlign: `${align ? align : "left"}`,
     fontSize: `${size ? `${size}` : "1rem"}`,
     fontWeight: `${bd ? `${bd}` : "500"}`,
-    marginTop: `${mgTop ? `${mgTop}rem` : ""}`,
+    marginTop: `${mgTop ? `${mgTop}` : ""}`,
     marginBottom: `${mgBtm ? `${mgBtm}rem` : ""}`,
     marginLeft: `${mgLeft ? `${mgLeft}rem` : ""}`,
     marginRight: `${mgRight ? `${mgRight}rem` : ""}`,

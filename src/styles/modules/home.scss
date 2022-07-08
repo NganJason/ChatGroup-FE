@@ -1,0 +1,25 @@
+.home {
+    
+
+    .body {
+        height: 100vh;
+
+        .header {
+            height: 60px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .content {
+            height: auto;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+  .home {
+    .sider {
+        display: none;
+    }
+  }
+}
