@@ -42,7 +42,14 @@ const items = [
     icon: <LogoutOutlined />,
   },
 ];
-const Sidebar = (): JSX.Element => {
+
+type SidebarProps = {
+  toggleShowModal: () => void;
+};
+
+const Sidebar = (props: SidebarProps): JSX.Element => {
+  const { toggleShowModal } = props
+
   const [ showMenu, setShowMenu ] = useState<boolean>(false)
 
   const toggleShowMenu = (): void => {
@@ -56,7 +63,12 @@ const Sidebar = (): JSX.Element => {
           Channels
         </Text>
 
-        <Button className="btn primary" size="small" icon={<PlusOutlined />} />
+        <Button
+          className="btn primary"
+          size="small"
+          icon={<PlusOutlined />}
+          onClick={toggleShowModal}
+        />
       </div>
 
       <div className="content">
