@@ -79,14 +79,22 @@
         margin: auto 0;
     }
 
-    .icon {
+    .icon__container {
         width: 12px;
         margin-left: 2rem;
 
+        position: relative;
+    }
+
+    .icon {
         cursor: pointer;
     }
 
     .icon:hover {
         transform: scale(1.1);
+    }
+
+    .menu-disable {
+        display: none;
     }
 }
