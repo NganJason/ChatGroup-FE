@@ -1,6 +1,7 @@
 .chatroom {
     height: 100%;
     width: 100%;
+    padding: 2rem 0;
 
     display: flex;
     flex-direction: column;
@@ -12,7 +13,7 @@
 }
 
 .chatroom .chatbox {
-    height: 85%;
+    height: 80%;
 
     display: flex;
     flex-direction: column-reverse;
@@ -30,12 +31,14 @@
     display: flex;
     position: relative;
 
-    input {
-        height: 2.2rem;
+    textarea {
+        min-height: 2.2rem;
         width: 100%;
 
         border: none;
         border-radius: 8px;
+
+        line-height: 20px;
     }
 
     button {

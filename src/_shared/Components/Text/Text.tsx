@@ -1,5 +1,5 @@
 import React from "react";
-import type { Property } from '../../../node_modules/csstype'
+import type { Property } from '../../../../node_modules/csstype'
 
 type TextProps = {
   align?: Property.TextAlign;
