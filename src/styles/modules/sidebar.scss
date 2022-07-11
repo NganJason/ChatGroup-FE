@@ -28,34 +28,6 @@
     padding: 1rem;
 
     overflow: scroll;
-
-    .channel {
-        margin: 1.5rem 0;
-
-        display: flex;
-        cursor: pointer;
-
-        .channel__icon {
-            width: 2.5rem;
-            height: 2.5rem;
-
-            display: flex;
-
-            border-radius: 8px;
-
-            p {
-                margin: auto;
-            }
-        }
-
-        .channel__name {
-            display: flex;
-
-            p {
-                margin: auto;
-            }
-        }
-    }
 }
 
 .sidebar .footer {

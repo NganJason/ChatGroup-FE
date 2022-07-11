@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 import { Button } from "antd";
+import Channel from "./Channel/Channel";
+import Text from "../../../_shared/Components/Text/Text";
+import Menu from "./Menu/Menu";
 import {
   PlusOutlined,
   DownOutlined,
@@ -9,21 +12,7 @@ import {
   LogoutOutlined
 } from "@ant-design/icons";
 
-import Text from "../../../_shared/Components/Text/Text";
-import Menu from "./Menu/Menu";
-
-const Channel = (): JSX.Element => {
-  return (
-    <div className="channel">
-      <div className="channel__icon bg-two">
-        <Text color="secondary">FD</Text>
-      </div>
-      <div className="channel__name">
-        <Text color="primary">Frontend Developers</Text>
-      </div>
-    </div>
-  );
-}
+import { channelsInfoUnread, userInfo } from "../../../_shared/types/types";
 
 const items = [
   {
@@ -44,16 +33,30 @@ const items = [
 ];
 
 type SidebarProps = {
+  userInfo: userInfo;
+  channelsMap: channelsInfoUnread;
+  currChannelID: number;
+  setCurrChannelID: Dispatch<SetStateAction<number>>;
   toggleShowModal: () => void;
 };
 
 const Sidebar = (props: SidebarProps): JSX.Element => {
-  const { toggleShowModal } = props
+  const {
+    toggleShowModal,
+    channelsMap,
+    userInfo,
+    currChannelID,
+    setCurrChannelID,
+  } = props;
 
   const [ showMenu, setShowMenu ] = useState<boolean>(false)
 
   const toggleShowMenu = (): void => {
     setShowMenu(!showMenu)
+  }
+
+  const onChannelClick = (channelID: number) => {
+    setCurrChannelID(channelID)
   }
 
   return (
@@ -72,15 +75,22 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
       </div>
 
       <div className="content">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6].map(() => {
-          return Channel();
-        })}
+        {Object.keys(channelsMap).map((id) => (
+          <Channel
+            key={Number(id)}
+            channel={channelsMap[Number(id)]}
+            isSelected={Number(id) === currChannelID}
+            onClick={() => {
+              onChannelClick(Number(id));
+            }}
+          />
+        ))}
       </div>
 
       <div className="footer bg-three">
-        <img src="https://media.wired.com/photos/5926c1288d4ebc5ab806b602/master/pass/SuperMarioRunHP.jpg" />
+        <img src={userInfo.profile_url} />
         <Text bd="700" align="left" color="tertiary">
-          Jason Ngan
+          {userInfo.user_name}
         </Text>
 
         <div className="icon__container">

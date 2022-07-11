@@ -1,30 +1,31 @@
 import React from "react"
 import Text from "../../../../_shared/Components/Text/Text";
+import { message } from "../../../../_shared/types/types";
 
 type MessageProps = {
-    name?: string;
+    msg: message;
 }
 
 const Message = (props: MessageProps): JSX.Element => {
-    const { name } = props
+    const { msg } = props
+
   return (
     <div className="message">
       <div className="message__img">
-        <img src="https://media.wired.com/photos/5926c1288d4ebc5ab806b602/master/pass/SuperMarioRunHP.jpg" />
+        <img src={msg.sender_info.profile_url} />
       </div>
       <div className="message__content">
         <div className="message__info">
           <Text size="1.1rem" bd="700" color="tertiary">
-            {name}
+            {msg.sender_info.user_name}
           </Text>
           <Text size="0.8rem" color="tertiary">
-            yesterday at 1.29pm
+            {msg.created_at}
           </Text>
         </div>
         <div className="message__body">
           <Text size="1rem" bd="500">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry'
+            {msg.content}
           </Text>
         </div>
       </div>

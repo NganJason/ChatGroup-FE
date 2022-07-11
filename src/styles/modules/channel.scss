@@ -1,0 +1,31 @@
+.channel {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+
+    display: flex;
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    .channel__icon {
+        width: 2.5rem;
+        height: 2.5rem;
+
+        display: flex;
+
+        border-radius: 8px;
+
+        p {
+            margin: auto;
+        }
+    }
+
+    .channel__name {
+        display: flex;
+        justify-content: left;
+
+        p {
+            margin: auto 0 auto 1rem;
+        }
+    }
+}
