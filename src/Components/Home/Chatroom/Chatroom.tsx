@@ -1,17 +1,17 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import { Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import Message from "./Message/Message";
-import { channelsInfoUnread, channelsMessages } from "../../../_shared/types/types";
+import { message } from "../../../_shared/types/types";
 
 type ChatroomProps = {
   currChannelID: number;
-  channelsMessagesMap: channelsMessages;
-}
+  getMessages: (channelID: number) => message[]
+};
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {
-  const { currChannelID, channelsMessagesMap } = props
+  const { currChannelID, getMessages } = props;
 
   const [rows, setRows] = useState<number>(1)
   const [value, setValue] = useState<string>("")
@@ -46,13 +46,13 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
   return (
     <div className="chatroom">
       <div className="chatbox">
-        {
-          channelsMessagesMap[currChannelID] ?
-          channelsMessagesMap[currChannelID].map((msg) => (
+        {getMessages(currChannelID) ? (
+          getMessages(currChannelID).map((msg) => (
             <Message key={msg.message_id} msg={msg} />
-          )) :
+          ))
+        ) : (
           <div></div>
-        }
+        )}
       </div>
       <div className="input">
         <Input.TextArea

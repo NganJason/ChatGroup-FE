@@ -5,10 +5,10 @@ export type channel = {
 };
 
 export type userInfo = {
-    user_id: number;
-    user_name: string;
-    email_address: string;
-    profile_url: string;
+    user_id?: number;
+    user_name?: string;
+    email_address?: string;
+    profile_url?: string;
 }
 
 export type message = {
@@ -19,14 +19,29 @@ export type message = {
   sender_info: userInfo;
 }
 
-export type channelsInfoUnread = {
+export type userChannels = {
+  user_info: userInfo;
+  channels: channel[];
+}
+
+export type channelMembers = {
+  channel_info: channel;
+  members: userInfo[];
+}
+
+export type channelMessages = {
+  channel_info: channel;
+  messages: message[]
+}
+
+export type channelsInfoMap = {
   [channel_id: number]: channel;
 }
 
-export type channelsMessages = {
+export type channelsMessagesMap = {
   [channel_id: number]: message[];
 }
 
-export type channelsMembers = {
+export type channelsMembersMap = {
   [channel_id: number]: userInfo[];
 }

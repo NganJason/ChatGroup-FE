@@ -12,7 +12,7 @@ import {
   LogoutOutlined
 } from "@ant-design/icons";
 
-import { channelsInfoUnread, userInfo } from "../../../_shared/types/types";
+import { channelsInfoMap, userInfo } from "../../../_shared/types/types";
 
 const items = [
   {
@@ -34,7 +34,7 @@ const items = [
 
 type SidebarProps = {
   userInfo: userInfo;
-  channelsMap: channelsInfoUnread;
+  channelsMap: channelsInfoMap;
   currChannelID: number;
   setCurrChannelID: Dispatch<SetStateAction<number>>;
   toggleShowModal: () => void;

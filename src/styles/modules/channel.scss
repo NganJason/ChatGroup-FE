@@ -1,10 +1,11 @@
 .channel {
     margin: 1.5rem 0;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.3rem;
 
     display: flex;
-    cursor: pointer;
 
+    position: relative;
+    cursor: pointer;
     border-radius: 6px;
 
     .channel__icon {
@@ -26,6 +27,23 @@
 
         p {
             margin: auto 0 auto 1rem;
+        }
+    }
+
+    .channel__badge {
+        width: 20px;
+        height: 20px;
+        margin: auto 0 auto 0.3rem;
+
+        display: flex;
+
+        position: absolute;
+        top: 30%;
+        right: 1rem;
+        border-radius: 6px;
+
+        p {
+            margin: auto;
         }
     }
 }
