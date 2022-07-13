@@ -1,17 +1,19 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import { Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import Message from "./Message/Message";
-import { channelsInfoUnread, channelsMessages } from "../../../_shared/types/types";
+import { message, userInfo } from "../../../_shared/types/types";
 
 type ChatroomProps = {
+  userInfo: userInfo;
   currChannelID: number;
-  channelsMessagesMap: channelsMessages;
-}
+  getMessages: (channelID: number) => message[]
+  addMessage: (senderInfo: userInfo, channelID: number, content: string) => void
+};
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {
-  const { currChannelID, channelsMessagesMap } = props
+  const { userInfo, currChannelID, getMessages, addMessage } = props;
 
   const [rows, setRows] = useState<number>(1)
   const [value, setValue] = useState<string>("")
@@ -24,11 +26,16 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
 
       if (value[value.length-1] === "\n") {
         setRows(rows - 1)
+        return
       }
     }
 
-    if (e.shiftKey && e.key==="Enter") {
+    if (e.shiftKey && e.key === "Enter") {
       setRows(rows + 1);
+      return;
+    } else if (e.key === "Enter") {
+      e.preventDefault()
+      addMsgHandler();
     }
   }
 
@@ -43,16 +50,21 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
     setValue(e.target.value)
   }
 
+  const addMsgHandler = (): void => {
+    addMessage(userInfo, currChannelID, value)
+    setValue("")
+  }
+
   return (
     <div className="chatroom">
       <div className="chatbox">
-        {
-          channelsMessagesMap[currChannelID] ?
-          channelsMessagesMap[currChannelID].map((msg) => (
+        {getMessages(currChannelID) ? (
+          getMessages(currChannelID).map((msg) => (
             <Message key={msg.message_id} msg={msg} />
-          )) :
+          ))
+        ) : (
           <div></div>
-        }
+        )}
       </div>
       <div className="input">
         <Input.TextArea
@@ -63,7 +75,7 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
           onChange={onInputChange}
           onKeyDown={onKeyDown}
         ></Input.TextArea>
-        <Button size="small" type="primary" icon={<SendOutlined />} />
+        <Button size="small" type="primary" icon={<SendOutlined />} onClick={addMsgHandler}/>
       </div>
     </div>
   );

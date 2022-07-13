@@ -4,63 +4,24 @@ import { Layout } from "antd";
 import Chatroom from "./Chatroom/Chatroom";
 import Nav from "./Nav/Nav";
 import Sidebar from "./Sidebar/Sidebar";
-
-import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import Modal from "./Modal/Modal";
 
-import { userChannels } from "../../mock_data/get_user_channels";
-import { channelMessages } from "../../mock_data/get_channel_messages";
-import { channelMembers } from "../../mock_data/get_channel_members";
-import { channelsInfoUnread, channelsMembers, channelsMessages, userInfo } from "../../_shared/types/types";
+import { useUserChannel } from "../../_shared/hooks/useUserChannel";
+import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
+import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
+import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
 
 const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
-  const [userInfo, setUserInfo] = useState<userInfo>(userChannels.user_info);
-  const [currChannelID, setCurrChannelID] = useState<number>(userChannels.channels[0].channel_id)
-
-  const [channelsMap, setChannelsMap] = useState<channelsInfoUnread>({})
-  const [channelsMessagesMap, setChannelsMessagesMap] = useState<channelsMessages>({})
-  const [channelsMembersMap, setChannelsMembersMap] = useState<channelsMembers>({})
+  const { userInfo, channelsMap, clearUnread } =useUserChannel(12345);
+  const { getMessages, addMessage } = useChannelsMessages()
+  const { getMembers } = useChannelsMembers()
+  const [currChannelID, setCurrChannelID] = useState<number>(0)
 
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
   const [ showModal, setShowModal ] = useState<boolean>(false)
-
-  useEffect(() => {
-    setUserInfo(userChannels.user_info);
-    setCurrChannelID(userChannels.channels[0].channel_id);
-
-    let newChannelsMap: channelsInfoUnread = {};
-    for (var ch of userChannels.channels) {
-      newChannelsMap[ch.channel_id] = ch;
-    }
-    setChannelsMap(newChannelsMap);
-
-    let newMessagesMap: channelsMessages = {};
-    for (var msg of channelMessages.messages) {
-      let channelID = channelMessages.channel_info.channel_id
-      if (!(channelID in newMessagesMap)) {
-        newMessagesMap[channelID] = []
-      }
-
-      newMessagesMap[channelID].push(msg);
-    }
-    setChannelsMessagesMap({ ...channelsMessagesMap, ...newMessagesMap });
-
-    let newChannelsMembersMap: channelsMembers = {};
-    for (var member of channelMembers.members) {
-      let channelID = channelMessages.channel_info.channel_id
-      if (!(channelID in newChannelsMembersMap)) {
-        newChannelsMembersMap[channelID] = []
-      }
-      
-      newChannelsMembersMap[channelMembers.channel_info.channel_id].push(
-        member
-      );
-    }
-    setChannelsMembersMap({ ...channelsMembersMap, ...newChannelsMembersMap });
-  }, []);
 
   useEffect(() => {
     if (width < 600) {
@@ -69,6 +30,21 @@ const Home = (): JSX.Element => {
       setShowSideBar(true)
     }
   }, [width])
+
+  useEffect(() => {
+    clearUnread(currChannelID);
+  }, [currChannelID]);
+
+  useEffect(() => {
+    if (currChannelID === 0) {
+      let firstID = parseInt(Object.keys(channelsMap)[0]);
+      
+      if (!isNaN(firstID)) {
+        setCurrChannelID(firstID);
+      }
+      
+    }
+  }, [channelsMap])
 
   const toggleSideBar = () => {
     setShowSideBar(!showSideBar)
@@ -98,14 +74,16 @@ const Home = (): JSX.Element => {
             <Nav
               currChannelID={currChannelID}
               channelsMap={channelsMap}
-              channelsMembersMap={channelsMembersMap}
+              getMembers={getMembers}
               toggleSideBar={toggleSideBar}
             />
           </div>
           <Content className="bg-two content">
             <Chatroom
+              userInfo={userInfo}
               currChannelID={currChannelID}
-              channelsMessagesMap={channelsMessagesMap}
+              getMessages={getMessages}
+              addMessage={addMessage}
             ></Chatroom>
           </Content>
         </Layout>

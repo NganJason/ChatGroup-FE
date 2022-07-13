@@ -19,6 +19,11 @@ const Channel = (props: ChannelProps): JSX.Element => {
       </div>
       <div className="channel__name">
         <Text color="primary">{channel.channel_name}</Text>
+        {channel.unread > 0 && (
+          <div className="channel__badge bg-alert">
+            <Text size="0.8rem" bd="500" color="secondary">{channel.unread}</Text>
+          </div>
+        )}
       </div>
     </div>
   );
