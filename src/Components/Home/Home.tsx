@@ -15,7 +15,7 @@ const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
   const { userInfo, channelsMap, clearUnread } =useUserChannel(12345);
-  const { getMessages } = useChannelsMessages()
+  const { getMessages, addMessage } = useChannelsMessages()
   const { getMembers } = useChannelsMembers()
   const [currChannelID, setCurrChannelID] = useState<number>(0)
 
@@ -34,6 +34,17 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     clearUnread(currChannelID);
   }, [currChannelID]);
+
+  useEffect(() => {
+    if (currChannelID === 0) {
+      let firstID = parseInt(Object.keys(channelsMap)[0]);
+      
+      if (!isNaN(firstID)) {
+        setCurrChannelID(firstID);
+      }
+      
+    }
+  }, [channelsMap])
 
   const toggleSideBar = () => {
     setShowSideBar(!showSideBar)
@@ -69,8 +80,10 @@ const Home = (): JSX.Element => {
           </div>
           <Content className="bg-two content">
             <Chatroom
+              userInfo={userInfo}
               currChannelID={currChannelID}
               getMessages={getMessages}
+              addMessage={addMessage}
             ></Chatroom>
           </Content>
         </Layout>
