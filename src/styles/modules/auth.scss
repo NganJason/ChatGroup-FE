@@ -1,0 +1,58 @@
+.auth {
+    min-height: 100vh;
+    width: 100vw;
+
+    display: flex;
+}
+
+.container {
+    height: auto;
+    width: 30rem;
+    padding: 2rem;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #BDBDBD;
+    border-radius: 12px;
+}
+
+.auth .container .header {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 1.5rem;
+
+    p {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+}
+
+.auth .container .input-container {
+    display: flex;
+    flex-direction: column;
+
+    input {
+        height: 2.5rem;
+        padding: 0.8rem;
+        margin-bottom: 0.5rem;
+
+        border: none;
+        border-radius: 6px;
+    }
+
+    input:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+}
+
+.auth .container .submit {
+    button {
+        height: 3rem;
+        width: 7rem;
+        margin-top: 1rem;
+
+        border-radius: 6px;
+    }
+}
