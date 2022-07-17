@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getUserChannels } from "../../mock_data/get_user_channels";
-import { channelsInfoMap, userInfo } from "../types/types";
+import { channel, channelsInfoMap, userInfo } from "../types/types";
 
 type useUserChannelReturn = {
     userInfo: userInfo;
     channelsMap: channelsInfoMap;
     clearUnread: (channelID: number) => void;
+    addChannel: (channelName: string) => void;
 }
 
 export const useUserChannel = (userID: number): useUserChannelReturn => {
@@ -34,9 +35,23 @@ export const useUserChannel = (userID: number): useUserChannelReturn => {
       setChannelsMap(newChannelsMap);
     };
 
+    const addChannel = (channelName: string): void => {
+        let newChannel: channel = {
+            channel_id: (new Date().getTime()),
+            channel_name: channelName,
+            unread: 0,
+        }
+
+        setChannelsMap((prev) => ({
+            ...prev,
+            [newChannel.channel_id]: newChannel,
+        }))
+    }
+
     return {
         userInfo,
         channelsMap,
-        clearUnread
+        clearUnread,
+        addChannel,
     }
 }

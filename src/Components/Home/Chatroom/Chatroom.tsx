@@ -36,6 +36,7 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
     } else if (e.key === "Enter") {
       e.preventDefault()
       addMsgHandler();
+      setRows(1)
     }
   }
 

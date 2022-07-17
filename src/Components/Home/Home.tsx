@@ -14,7 +14,7 @@ import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
 const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
-  const { userInfo, channelsMap, clearUnread } =useUserChannel(12345);
+  const { userInfo, channelsMap, clearUnread, addChannel } =useUserChannel(12345);
   const { getMessages, addMessage } = useChannelsMessages()
   const { getMembers } = useChannelsMembers()
   const [currChannelID, setCurrChannelID] = useState<number>(0)
@@ -88,7 +88,11 @@ const Home = (): JSX.Element => {
           </Content>
         </Layout>
       </Layout>
-      <Modal showModal={showModal} toggleShowModal={toggleShowModal} />
+      <Modal
+        showModal={showModal}
+        toggleShowModal={toggleShowModal}
+        addChannel={addChannel}
+      />
     </>
   );
 };
