@@ -1,0 +1,56 @@
+.channel-info {
+    width: 230px;
+    height: 250px;
+    padding: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    z-index: 10;
+    top: 30px;
+
+    border-radius: 6px;
+    border: 0.1px solid #7F8487;
+}
+
+.channel-info.disable {
+    display: none;
+}
+
+.members {
+    height: 90%;
+    overflow: auto;
+}
+
+.member {
+    height: 50px;
+    padding: 0.5rem;
+    margin-bottom: 0.2rem;
+    display: flex;
+
+    border-radius: 6px;
+
+    .member__img {
+        width: 30px;
+        height: 30px;
+        margin-right: 0.5rem;
+
+        object-fit: cover;
+        border-radius: 100%;
+    }
+}
+
+.add-btn {
+    height: 35px;
+
+    display: flex;
+
+    border-top: 0.1px solid #7F8487;
+    border-radius: 2px;
+    cursor: pointer;
+
+    p {
+        margin: auto;
+    }
+}

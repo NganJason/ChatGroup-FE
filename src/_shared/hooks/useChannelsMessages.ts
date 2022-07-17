@@ -33,10 +33,17 @@ export const useChannelsMessages = (): useChannelsMessagesReturn => {
       sender_info: senderInfo
     }
 
-    setChannelsMessagesMap((prev) => ({
-      ...prev,
-      [channelID]: [newMessage, ...prev[channelID]],
-    }));
+    setChannelsMessagesMap((prev) => {
+      let newMap = {...prev}
+
+      if (!newMap[channelID]) {
+        newMap[channelID] = []
+      }
+
+      newMap[channelID] = [newMessage, ...newMap[channelID]]
+
+      return newMap
+    });
   }
 
   return {

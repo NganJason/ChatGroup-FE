@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Layout } from "antd";
 import Chatroom from "./Chatroom/Chatroom";
 import Nav from "./Nav/Nav";
 import Sidebar from "./Sidebar/Sidebar";
-import Modal from "./Modal/Modal";
+import AddChannelModal from "./AddChannelModal/AddChannelModal";
 
 import { useUserChannel } from "../../_shared/hooks/useUserChannel";
 import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
 import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
+import { ModalContext } from "../../_shared/hooks/showModalContext";
+import AddMemberModal from "./AddMemberModal/AddMemberModal";
 
 const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
-  const { userInfo, channelsMap, clearUnread } =useUserChannel(12345);
+  const { userInfo, channelsMap, clearUnread, addChannel } =useUserChannel(12345);
   const { getMessages, addMessage } = useChannelsMessages()
   const { getMembers } = useChannelsMembers()
   const [currChannelID, setCurrChannelID] = useState<number>(0)
 
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
-  const [ showModal, setShowModal ] = useState<boolean>(false)
+  const { setShowChannelInfo, setShowSidebarMenu, setShowAddMemberModal } = useContext(ModalContext)
 
   useEffect(() => {
     if (width < 600) {
@@ -50,13 +52,15 @@ const Home = (): JSX.Element => {
     setShowSideBar(!showSideBar)
   }
 
-  const toggleShowModal = () => {
-    setShowModal(!showModal)
+  const closeAllModals = () => {
+    setShowChannelInfo(false)
+    setShowSidebarMenu(false)
+    setShowAddMemberModal(false)
   }
 
   return (
     <>
-      <Layout className="home">
+      <Layout className="home" onClick={closeAllModals}>
         <Sider
           width={"18rem"}
           className={`bg-one sider ${!showSideBar ? "disable" : ""}`}
@@ -66,7 +70,6 @@ const Home = (): JSX.Element => {
             channelsMap={channelsMap}
             currChannelID={currChannelID}
             setCurrChannelID={setCurrChannelID}
-            toggleShowModal={toggleShowModal}
           />
         </Sider>
         <Layout className="body">
@@ -88,7 +91,8 @@ const Home = (): JSX.Element => {
           </Content>
         </Layout>
       </Layout>
-      <Modal showModal={showModal} toggleShowModal={toggleShowModal} />
+      <AddChannelModal addChannel={addChannel} />
+      <AddMemberModal/>
     </>
   );
 };
