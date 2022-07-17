@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext } from "react";
 
 import { Button } from "antd";
 import Channel from "./Channel/Channel";
@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 
 import { channelsInfoMap, userInfo } from "../../../_shared/types/types";
+import { ModalContext } from "../../../_shared/hooks/showModalContext";
 
 const items = [
   {
@@ -37,26 +38,29 @@ type SidebarProps = {
   channelsMap: channelsInfoMap;
   currChannelID: number;
   setCurrChannelID: Dispatch<SetStateAction<number>>;
-  toggleShowModal: () => void;
 };
 
 const Sidebar = (props: SidebarProps): JSX.Element => {
   const {
-    toggleShowModal,
     channelsMap,
     userInfo,
     currChannelID,
     setCurrChannelID,
   } = props;
 
-  const [ showMenu, setShowMenu ] = useState<boolean>(false)
-
-  const toggleShowMenu = (): void => {
-    setShowMenu(!showMenu)
-  }
+  const { 
+    showSidebarMenu, 
+    toggleShowSidebarMenu, 
+    toggleShowAddChannelModal 
+  } = useContext(ModalContext)
 
   const onChannelClick = (channelID: number) => {
     setCurrChannelID(channelID)
+  }
+
+  const toggleMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
+    toggleShowSidebarMenu()
   }
 
   return (
@@ -70,7 +74,7 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
           className="btn primary"
           size="small"
           icon={<PlusOutlined />}
-          onClick={toggleShowModal}
+          onClick={toggleShowAddChannelModal}
         />
       </div>
 
@@ -94,11 +98,11 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
         </Text>
 
         <div className="icon__container">
-          <DownOutlined className="icon primary" onClick={toggleShowMenu} />
+          <DownOutlined className="icon primary" onClick={toggleMenu} />
           <Menu
-            className={`${showMenu ? "" : "menu-disable"}`}
+            className={`${showSidebarMenu ? "" : "menu-disable"}`}
             items={items}
-            toggleShowMenu={toggleShowMenu}
+            toggleMenu={toggleMenu}
           />
         </div>
       </div>

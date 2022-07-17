@@ -1,31 +1,20 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Text from "../../../_shared/Components/Text/Text";
 
 import { Input, Button } from "antd";
 
+import { ModalContext } from "../../../_shared/hooks/showModalContext";
+
 type ModalProps = {
-  showModal?: boolean;
-  toggleShowModal: () => void;
   addChannel: (channelName: string) => void;
 };
 
 const Modal = (props: ModalProps): JSX.Element => {
-    const { showModal, toggleShowModal, addChannel } = props;
+    const { addChannel } = props;
 
     const [ channelName, setChannelName ] = useState<string>("")
     const [ channelDesc, setChannelDesc ] = useState<string>("")
-
-    const toggleModal = (e: React.MouseEvent<HTMLElement>) => {
-        toggleShowModal();
-    }
-
-    const onSave = () => {
-        toggleShowModal()
-
-        addChannel(channelName)
-        setChannelName("")
-        setChannelDesc("")
-    }
+    const { toggleShowAddChannelModal, showAddChannelModal } = useContext(ModalContext)
 
     const stopPropagation = (e: React.MouseEvent<HTMLElement>) => {
       e.stopPropagation();
@@ -49,10 +38,21 @@ const Modal = (props: ModalProps): JSX.Element => {
       }
     }
 
+    const onSave = () => {
+      toggleShowAddChannelModal();
+
+      if (channelName != "") {
+        addChannel(channelName);
+      }
+      
+      setChannelName("");
+      setChannelDesc("");
+    };
+
     return (
       <div
-        className={`overlay ${!showModal ? "disabled" : ""}`}
-        onClick={toggleModal}
+        className={`overlay ${!showAddChannelModal ? "disabled" : ""}`}
+        onClick={toggleShowAddChannelModal}
       >
         <div className="modal" onClick={stopPropagation}>
           <div className="header">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Layout } from "antd";
 import Chatroom from "./Chatroom/Chatroom";
@@ -10,6 +10,7 @@ import { useUserChannel } from "../../_shared/hooks/useUserChannel";
 import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
 import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
+import { ModalContext } from "../../_shared/hooks/showModalContext";
 
 const { Sider, Content } = Layout;
 
@@ -21,7 +22,7 @@ const Home = (): JSX.Element => {
 
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
-  const [ showModal, setShowModal ] = useState<boolean>(false)
+  const { setShowChannelInfo, setShowSidebarMenu } = useContext(ModalContext)
 
   useEffect(() => {
     if (width < 600) {
@@ -50,13 +51,14 @@ const Home = (): JSX.Element => {
     setShowSideBar(!showSideBar)
   }
 
-  const toggleShowModal = () => {
-    setShowModal(!showModal)
+  const closeAllModals = () => {
+    setShowChannelInfo(false)
+    setShowSidebarMenu(false)
   }
 
   return (
     <>
-      <Layout className="home">
+      <Layout className="home" onClick={closeAllModals}>
         <Sider
           width={"18rem"}
           className={`bg-one sider ${!showSideBar ? "disable" : ""}`}
@@ -66,7 +68,6 @@ const Home = (): JSX.Element => {
             channelsMap={channelsMap}
             currChannelID={currChannelID}
             setCurrChannelID={setCurrChannelID}
-            toggleShowModal={toggleShowModal}
           />
         </Sider>
         <Layout className="body">
@@ -89,8 +90,6 @@ const Home = (): JSX.Element => {
         </Layout>
       </Layout>
       <Modal
-        showModal={showModal}
-        toggleShowModal={toggleShowModal}
         addChannel={addChannel}
       />
     </>

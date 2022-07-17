@@ -1,7 +1,7 @@
 import { channelMembers } from "../_shared/types/types";
 
 // GET /api/channel/members
-const channelsMembersData: {[key: number]:channelMembers} = {
+const channelsMembersData: { [key: number]: channelMembers } = {
   123: {
     channel_info: {
       channel_id: 123,
@@ -37,17 +37,17 @@ const channelsMembersData: {[key: number]:channelMembers} = {
         user_name: "John Goh",
         email_address: "john.goh@mail.com",
         profile_url:
-          "https://staticg.sportskeeda.com/editor/2021/12/b5306-16406537216511-1920.jpg",
+          "https://www.personality-database.com/profile_images/1217.png",
       },
       {
-          user_id: 12345,
-          user_name: "Jason Ngan",
-          email_address: "jason.ngan@mail.com",
-          profile_url:
-            "https://staticg.sportskeeda.com/editor/2021/12/b5306-16406537216511-1920.jpg",
+        user_id: 12345,
+        user_name: "Jason Ngan",
+        email_address: "jason.ngan@mail.com",
+        profile_url:
+          "https://staticg.sportskeeda.com/editor/2021/12/b5306-16406537216511-1920.jpg",
       },
     ],
-  }
+  },
 };
 
 export const getChannelMembers = (channelID: number): channelMembers => {

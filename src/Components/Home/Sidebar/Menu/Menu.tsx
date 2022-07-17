@@ -5,7 +5,7 @@ import Text from "../../../../_shared/Components/Text/Text";
 type MenuProps = {
   items?: Item[];
   className?: string;
-  toggleShowMenu?: () => void;
+  toggleMenu?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 type Item = {
@@ -15,13 +15,10 @@ type Item = {
 }
 
 const Menu = (props: MenuProps): JSX.Element => {
-    const { items, className, toggleShowMenu } = props;
+    const { items, className, toggleMenu } = props;
 
     return (
-      <div
-        className={`menu bg-two shadow ${className}`}
-        onClick={toggleShowMenu}
-      >
+      <div className={`menu bg-two shadow ${className}`} onClick={toggleMenu}>
         {items?.map((item) => {
           return (
             <div className="menu__item bg-one-hover">
