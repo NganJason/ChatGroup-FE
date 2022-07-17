@@ -5,11 +5,11 @@ import { Input, Button } from "antd";
 
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
 
-type ModalProps = {
+type AddChannelModalProps = {
   addChannel: (channelName: string) => void;
 };
 
-const Modal = (props: ModalProps): JSX.Element => {
+const AddChannelModal = (props: AddChannelModalProps): JSX.Element => {
     const { addChannel } = props;
 
     const [ channelName, setChannelName ] = useState<string>("")
@@ -51,7 +51,7 @@ const Modal = (props: ModalProps): JSX.Element => {
 
     return (
       <div
-        className={`overlay ${!showAddChannelModal ? "disabled" : ""}`}
+        className={`overlay ${!showAddChannelModal && "disabled"}`}
         onClick={toggleShowAddChannelModal}
       >
         <div className="modal" onClick={stopPropagation}>
@@ -91,4 +91,4 @@ const Modal = (props: ModalProps): JSX.Element => {
     );
 }
 
-export default Modal;
+export default AddChannelModal;

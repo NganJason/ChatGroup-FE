@@ -4,13 +4,14 @@ import { Layout } from "antd";
 import Chatroom from "./Chatroom/Chatroom";
 import Nav from "./Nav/Nav";
 import Sidebar from "./Sidebar/Sidebar";
-import Modal from "./Modal/Modal";
+import AddChannelModal from "./AddChannelModal/AddChannelModal";
 
 import { useUserChannel } from "../../_shared/hooks/useUserChannel";
 import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
 import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
 import { ModalContext } from "../../_shared/hooks/showModalContext";
+import AddMemberModal from "./AddMemberModal/AddMemberModal";
 
 const { Sider, Content } = Layout;
 
@@ -22,7 +23,7 @@ const Home = (): JSX.Element => {
 
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
-  const { setShowChannelInfo, setShowSidebarMenu } = useContext(ModalContext)
+  const { setShowChannelInfo, setShowSidebarMenu, setShowAddMemberModal } = useContext(ModalContext)
 
   useEffect(() => {
     if (width < 600) {
@@ -54,6 +55,7 @@ const Home = (): JSX.Element => {
   const closeAllModals = () => {
     setShowChannelInfo(false)
     setShowSidebarMenu(false)
+    setShowAddMemberModal(false)
   }
 
   return (
@@ -89,9 +91,8 @@ const Home = (): JSX.Element => {
           </Content>
         </Layout>
       </Layout>
-      <Modal
-        addChannel={addChannel}
-      />
+      <AddChannelModal addChannel={addChannel} />
+      <AddMemberModal/>
     </>
   );
 };

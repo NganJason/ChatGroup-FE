@@ -1,0 +1,30 @@
+.ant-select-selector {
+    border-radius: 6px !important;
+    border: 0.1px solid #7F8487 !important;
+
+    background-color: #3C393F !important;
+    color: #F2F2F2 !important;
+    text-align: left !important;
+}
+
+.ant-select-selection-overflow {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+.ant-select-selection-overflow-item {
+    width: 6rem !important;
+    margin-right: 0.3rem !important;
+}
+
+.ant-select-selection-item {
+    width: 100% !important;
+
+    border: none !important;
+
+    background-color:  #252329 !important;
+
+    .anticon.anticon-close {
+        color: #F2F2F2;
+    }
+}

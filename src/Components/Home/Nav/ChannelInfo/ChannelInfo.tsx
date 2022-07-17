@@ -9,12 +9,19 @@ type ChannelInfoProps = {
 
 const ChannelInfo = (props: ChannelInfoProps): JSX.Element => {
     const { members } = props
-    const { showChannelInfo } = useContext(ModalContext)
+    const { showChannelInfo, setShowChannelInfo, setShowAddMemberModal } = useContext(ModalContext)
 
     const stopPropagate = (e: React.MouseEvent<HTMLElement>) => {
       e.stopPropagation()
     }
 
+    const onAddMemberHandler = (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      setShowChannelInfo(false)
+      setShowAddMemberModal(true)
+    }
     return (
       <div
         className={`channel-info bg-one ${!showChannelInfo && "disable"}`}
@@ -31,7 +38,7 @@ const ChannelInfo = (props: ChannelInfoProps): JSX.Element => {
           ))}
         </div>
 
-        <div className="add-btn bg-one-hover">
+        <div className="add-btn bg-one-hover" onClick={onAddMemberHandler}>
           <Text>Add member</Text>
         </div>
       </div>
