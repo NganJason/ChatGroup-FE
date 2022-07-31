@@ -43,7 +43,7 @@ export interface GetUserChannelsRequest {}
 
 export interface GetUserChannelsResponse {
   debug_msg?: string;
-  channels?: Channel[];
+  channels?: ChannelObj[];
 }
 
 export interface CreateChannelRequest {
@@ -53,7 +53,7 @@ export interface CreateChannelRequest {
 
 export interface CreateChannelResponse {
   debug_msg?: string;
-  channel?: Channel;
+  channel?: ChannelObj;
 }
 
 export interface GetChannelMessagesRequest {
@@ -104,7 +104,7 @@ export interface User {
   photo_url?: string;
 }
 
-export interface Channel {
+export interface ChannelObj {
   channel_id?: number;
   channel_name?: string;
   channel_desc?: string;
@@ -175,7 +175,7 @@ class ChatGroup {
     }    
   }
 
-  async signup(username:string, password:string):Promise<AuthSignupResponse> {
+  async signup(username:string, password:string): Promise<AuthSignupResponse> {
     let url: string = this.baseUrl + "auth/signup"
 
     try {
@@ -198,7 +198,7 @@ class ChatGroup {
     }
   }
 
-  async logout():Promise<AuthLogoutResponse> {
+  async logout(): Promise<AuthLogoutResponse> {
     let url: string = this.baseUrl + "auth/logout"
 
     try {
@@ -215,6 +215,64 @@ class ChatGroup {
       }
       
       throw err
+    }
+  }
+
+  async getUserChannels(): Promise<GetUserChannelsResponse> {
+    let url: string = this.baseUrl + "user/channels"
+
+    try {
+      let resp = await axios.post(url, {}, { withCredentials: true });
+
+      return handleResp(resp);
+    } catch (err: any) {
+      if (err.response.status >= 400) {
+        throw new Error(err.response.data.debug_msg);
+      }
+
+      throw err;
+    }
+  }
+
+  async createChannel(
+    channelName: string,
+    channelDesc: string,
+  ): Promise<CreateChannelResponse> {
+    let url: string = this.baseUrl + "channel/create"
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          channel_name: channelName,
+          channel_desc: channelDesc
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err;
+    }
+  }
+
+  async getChannelMembers(
+    channelID: number,
+  ): Promise<GetChannelMembersResponse> {
+    let url: string = this.baseUrl + "channel/members"
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          channel_id: channelID,
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err;
     }
   }
 }

@@ -12,11 +12,12 @@ import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
 import { ModalContext } from "../../_shared/hooks/showModalContext";
 import AddMemberModal from "./AddMemberModal/AddMemberModal";
+import { DataContext } from "../../_shared/hooks/dataContext";
 
 const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
-  const { userInfo, channelsMap, clearUnread, addChannel } =useUserChannel(12345);
+  const { user, channelsMap, clearUnread, addChannel } = useContext(DataContext);
   const { getMessages, addMessage } = useChannelsMessages()
   const { getMembers } = useChannelsMembers()
   const [currChannelID, setCurrChannelID] = useState<number>(0)
@@ -66,8 +67,6 @@ const Home = (): JSX.Element => {
           className={`bg-one sider ${!showSideBar ? "disable" : ""}`}
         >
           <Sidebar
-            userInfo={userInfo}
-            channelsMap={channelsMap}
             currChannelID={currChannelID}
             setCurrChannelID={setCurrChannelID}
           />
@@ -83,7 +82,6 @@ const Home = (): JSX.Element => {
           </div>
           <Content className="bg-two content">
             <Chatroom
-              userInfo={userInfo}
               currChannelID={currChannelID}
               getMessages={getMessages}
               addMessage={addMessage}

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom";
 import { ChatGroupQueryKey } from "../../_shared/queries/chat_group";
 
@@ -9,6 +9,7 @@ import Text from "../../_shared/Components/Text/Text";
 import { useLogin, useSignup } from "../../_shared/mutations/chat_group";
 import { User } from "../../_shared/apis/chat_group";
 import { useQueryClient } from "react-query";
+import { DataContext } from "../../_shared/hooks/dataContext";
 
 enum inputID {
     email = "email",
@@ -21,6 +22,7 @@ const Auth = (): JSX.Element => {
     )
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const { setUser } = useContext(DataContext)
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
@@ -54,6 +56,7 @@ const Auth = (): JSX.Element => {
     } = useLogin(
       {
         onSuccess: (resp: User): void => {
+          setUser(resp);
           queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH);
           navigate("/");
         },
@@ -69,6 +72,7 @@ const Auth = (): JSX.Element => {
     } = useSignup(
       {
         onSuccess: (resp: User): void => {
+          setUser(resp);
           queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH);
           navigate("/");
         },

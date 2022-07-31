@@ -12,6 +12,7 @@ import ProtectedRoute from './Components/CustomRoute/ProtectedRoute';
 import AuthRoute from './Components/CustomRoute/AuthRoute';
 
 import { useValidateAuthQuery } from './_shared/queries/chat_group';
+import { DataProvider } from './_shared/hooks/dataContext';
 
 
 function App() {
@@ -23,23 +24,25 @@ function App() {
   
   return (
     <div className="App">
-      <ShowModalProvider>
-        {isValidateAuthLoading ? (
-          <div>loading</div>
-        ) : (
-          <BrowserRouter>
-            <Routes>
-              <Route element={<AuthRoute isAuth={isAuth || false} />}>
-                <Route path="/login" element={<Auth />} />
-                <Route path="/signup" element={<Auth />} />
-              </Route>
-              <Route element={<ProtectedRoute isAuth={isAuth || false} />}>
-                <Route path="/" element={<Home />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        )}
-      </ShowModalProvider>
+      <DataProvider>
+        <ShowModalProvider>
+          {isValidateAuthLoading ? (
+            <div>loading</div>
+          ) : (
+            <BrowserRouter>
+              <Routes>
+                <Route element={<AuthRoute isAuth={isAuth || false} />}>
+                  <Route path="/login" element={<Auth />} />
+                  <Route path="/signup" element={<Auth />} />
+                </Route>
+                <Route element={<ProtectedRoute isAuth={isAuth || false} />}>
+                  <Route path="/" element={<Home />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          )}
+        </ShowModalProvider>
+      </DataProvider>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import {
     UseMutationOptions,
     UseMutationResult,
 } from "react-query"
-import { AuthLoginRequest, AuthLoginResponse, AuthSignupRequest, AuthSignupResponse, NewChatGroupService, User } from "../apis/chat_group"
+import { AuthLoginRequest, AuthLoginResponse, AuthSignupRequest, AuthSignupResponse, ChannelObj, CreateChannelRequest, CreateChannelResponse, NewChatGroupService, User } from "../apis/chat_group"
 
 export const useLogin = (
     options?: UseMutationOptions<
@@ -69,3 +69,25 @@ export const useLogout = (
 
   return useMutation(logoutMutate, options);
 };
+
+export const useCreateChannel = (
+    options?: UseMutationOptions<
+        ChannelObj,
+        unknown,
+        CreateChannelRequest,
+        unknown
+    >
+) => {
+    const createChannelMutate = async (params: CreateChannelRequest): Promise<ChannelObj> => {
+      const service = NewChatGroupService();
+
+      const response: CreateChannelResponse = await service.createChannel(
+        params.channel_name || "",
+        params.channel_desc || ""
+      );
+
+      return response.channel ?? {};
+    };
+
+    return useMutation(createChannelMutate, options);
+}
