@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import Message from "./Message/Message";
-import { message, userInfo } from "../../../_shared/types/types";
+import { message } from "../../../_shared/types/types";
+import { DataContext } from "../../../_shared/hooks/dataContext";
+import { User } from "../../../_shared/apis/chat_group";
 
 type ChatroomProps = {
-  userInfo: userInfo;
   currChannelID: number;
   getMessages: (channelID: number) => message[]
-  addMessage: (senderInfo: userInfo, channelID: number, content: string) => void
+  addMessage: (senderInfo: User, channelID: number, content: string) => void
 };
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {
-  const { userInfo, currChannelID, getMessages, addMessage } = props;
+  const { currChannelID, getMessages, addMessage } = props;
+  const { user } = useContext(DataContext)
 
   const [rows, setRows] = useState<number>(1)
   const [value, setValue] = useState<string>("")
@@ -52,7 +54,7 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
   }
 
   const addMsgHandler = (): void => {
-    addMessage(userInfo, currChannelID, value)
+    addMessage(user, currChannelID, value);
     setValue("")
   }
 

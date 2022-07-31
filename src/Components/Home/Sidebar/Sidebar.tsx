@@ -9,20 +9,16 @@ import {
   DownOutlined
 } from "@ant-design/icons";
 
-import { channelsInfoMap, userInfo } from "../../../_shared/types/types";
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
+import { DataContext } from "../../../_shared/hooks/dataContext";
 
 type SidebarProps = {
-  userInfo: userInfo;
-  channelsMap: channelsInfoMap;
   currChannelID: number;
   setCurrChannelID: Dispatch<SetStateAction<number>>;
 };
 
 const Sidebar = (props: SidebarProps): JSX.Element => {
   const {
-    channelsMap,
-    userInfo,
     currChannelID,
     setCurrChannelID,
   } = props;
@@ -32,6 +28,11 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
     toggleShowSidebarMenu, 
     toggleShowAddChannelModal 
   } = useContext(ModalContext)
+
+  const {
+    user,
+    channelsMap
+  } = useContext(DataContext)
 
   const onChannelClick = (channelID: number) => {
     setCurrChannelID(channelID)
@@ -71,9 +72,14 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
       </div>
 
       <div className="footer bg-three">
-        <img src={userInfo.profile_url} />
+        <img
+          src={
+            user.photo_url ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+          }
+        />
         <Text bd="700" align="left" color="tertiary">
-          {userInfo.user_name}
+          {user.username}
         </Text>
 
         <div className="icon__container">

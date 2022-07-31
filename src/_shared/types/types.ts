@@ -1,8 +1,4 @@
-export type channel = {
-  channel_id: number;
-  channel_name: string;
-  unread: number;
-};
+import { ChannelObj } from "../apis/chat_group";
 
 export type userInfo = {
     user_id?: number;
@@ -21,22 +17,22 @@ export type message = {
 
 export type userChannels = {
   user_info: userInfo;
-  channels: channel[];
+  channels: ChannelObj[];
 }
 
 export type channelMembers = {
-  channel_info: channel;
+  channel_info: ChannelObj;
   members: userInfo[];
-}
+};
 
 export type channelMessages = {
-  channel_info: channel;
-  messages: message[]
-}
+  channel_info: ChannelObj;
+  messages: message[];
+};
 
 export type channelsInfoMap = {
-  [channel_id: number]: channel;
-}
+  [channel_id: number]: ChannelObj;
+};
 
 export type channelsMessagesMap = {
   [channel_id: number]: message[];

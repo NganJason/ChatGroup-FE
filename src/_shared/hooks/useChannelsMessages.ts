@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { getChannelMessages } from "../../mock_data/get_channel_messages";
-import { channelsMessagesMap, message, userInfo } from "../types/types";
+import { User } from "../apis/chat_group";
+import { channelsMessagesMap, message } from "../types/types";
 
 type useChannelsMessagesReturn = {
   getMessages: (channelID: number) => message[];
-  addMessage: (senderInfo: userInfo, channelID: number, content: string) => void
+  addMessage: (senderInfo: User, channelID: number, content: string) => void
 };
 
 export const useChannelsMessages = (): useChannelsMessagesReturn => {
@@ -24,13 +25,13 @@ export const useChannelsMessages = (): useChannelsMessagesReturn => {
     return newChannelsMessagesMap[channelID]
   }
 
-  const addMessage = (senderInfo: userInfo, channelID: number, content: string): void => {
+  const addMessage = (senderInfo: User, channelID: number, content: string): void => {
     let newMessage: message = {
       message_id: (new Date()).getTime(),
       channel_id: channelID,
       content: content,
       created_at: (new Date()).getTime(),
-      sender_info: senderInfo
+      sender_info: {}
     }
 
     setChannelsMessagesMap((prev) => {
