@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export interface ValidateAuthRequest {}
+
+export interface ValidateAuthResponse {
+  debug_msg?: string;
+  is_auth?: boolean;
+}
 export interface AuthLoginRequest {
   username?: string;
   password?: string;
@@ -8,6 +14,12 @@ export interface AuthLoginRequest {
 export interface AuthLoginResponse {
   debug_msg?: string;
   user_info?: User;
+}
+
+export interface AuthLogoutRequest {}
+
+export interface AuthLogoutResponse {
+  debug_msg?: string;
 }
 
 export interface AuthSignupRequest {
@@ -117,7 +129,23 @@ class ChatGroup {
   baseUrl: string;
 
   constructor() {
-    this.baseUrl = "/api/";
+    this.baseUrl = "http://localhost:8082/api/";
+  }
+
+  async validateAuth(): Promise<ValidateAuthResponse> {
+    let url: string = this.baseUrl + "auth/validate"
+
+    try {
+      let resp = await axios.post(url, {}, { withCredentials: true });
+
+      return handleResp(resp)
+    } catch(err: any) {
+      if (err.response.status >= 400) {
+        throw new Error(err.response.data.debug_msg);
+      }
+
+      throw err
+    }
   }
 
   async login(
@@ -126,8 +154,9 @@ class ChatGroup {
   ): Promise<AuthLoginResponse> {
     let url: string = this.baseUrl + "auth/login";
 
+    var resp: any
     try {
-        let resp = await axios.post(
+        resp = await axios.post(
             url,
             {
                 username: username,
@@ -137,7 +166,11 @@ class ChatGroup {
         )
 
         return handleResp(resp)
-    } catch(err) {
+    } catch(err: any) {
+        if (err.response.status >= 400) {
+          throw new Error(err.response.data.debug_msg)
+        }
+        
         throw err
     }    
   }
@@ -156,14 +189,38 @@ class ChatGroup {
         )
 
         return handleResp(resp)
-    } catch(err) {
+    } catch(err: any) {
+        if (err.response.status >= 400) {
+          throw new Error(err.response.data.debug_msg);
+        }
+        
         throw err
+    }
+  }
+
+  async logout():Promise<AuthLogoutResponse> {
+    let url: string = this.baseUrl + "auth/logout"
+
+    try {
+      let resp = await axios.post(
+        url,
+        {},
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err: any) {
+      if (err.response.status >= 400) {
+        throw new Error(err.response.data.debug_msg);
+      }
+      
+      throw err
     }
   }
 }
 
 const handleResp = (resp: any):any => {
-    if (resp.data.debug_msg !== "") {
+    if (resp.data.debug_msg && resp.data.debug_msg !== "") {
         throw new Error(resp.dat.debug_msg)
     }
 

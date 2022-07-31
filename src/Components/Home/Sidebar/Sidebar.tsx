@@ -6,32 +6,11 @@ import Text from "../../../_shared/Components/Text/Text";
 import Menu from "./Menu/Menu";
 import {
   PlusOutlined,
-  DownOutlined,
-  UserOutlined,
-  SettingOutlined,
-  LogoutOutlined
+  DownOutlined
 } from "@ant-design/icons";
 
 import { channelsInfoMap, userInfo } from "../../../_shared/types/types";
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
-
-const items = [
-  {
-    label: "Profile",
-    key: "profile",
-    icon: <UserOutlined />,
-  },
-  {
-    label: "Settings",
-    key: "settings",
-    icon: <SettingOutlined />,
-  },
-  {
-    label: "Logout",
-    logout: "logout",
-    icon: <LogoutOutlined />,
-  },
-];
 
 type SidebarProps = {
   userInfo: userInfo;
@@ -101,7 +80,6 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
           <DownOutlined className="icon primary" onClick={toggleMenu} />
           <Menu
             className={`${showSidebarMenu ? "" : "menu-disable"}`}
-            items={items}
             toggleMenu={toggleMenu}
           />
         </div>

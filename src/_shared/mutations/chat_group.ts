@@ -57,3 +57,15 @@ export const useSignup = (
 
     return useMutation(signupMutate, options)
 }
+
+export const useLogout = (
+  options?: UseMutationOptions<void, unknown, void, unknown>
+) => {
+  const logoutMutate = async (): Promise<void> => {
+    const service = NewChatGroupService();
+
+    await service.logout();
+  };
+
+  return useMutation(logoutMutate, options);
+};
