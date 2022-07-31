@@ -1,23 +1,29 @@
 import React, { useState } from "react"
-
-import { Button } from "antd";
-import Text from "../../_shared/Components/Text/Text";
 import { useNavigate } from "react-router-dom";
+import { ChatGroupQueryKey } from "../../_shared/queries/chat_group";
 
-type AuthProps = {
-    isSignup?: boolean;
-}
+import { Button, message } from "antd";
+import Text from "../../_shared/Components/Text/Text";
+
+
+import { useLogin, useSignup } from "../../_shared/mutations/chat_group";
+import { User } from "../../_shared/apis/chat_group";
+import { useQueryClient } from "react-query";
 
 enum inputID {
     email = "email",
     password = "password"
 }
 
-const Auth = (props: AuthProps): JSX.Element => {
-    const { isSignup } = props
+const Auth = (): JSX.Element => {
+    const [ isSignup ] = useState(
+      window.location.pathname === "/signup"
+    )
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
     const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
 
     const onInputChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -29,9 +35,48 @@ const Auth = (props: AuthProps): JSX.Element => {
         }
     }
 
-    const onSubmitHandler = (): void => {
-        navigate("/")
+    const onSubmitHandler = async (): Promise<void> => {
+        if (isSignup) {
+          signup({
+            username: email,
+            password: password
+          })
+        } else {
+          login({
+            username: email,
+            password: password
+          })
+        }
     }
+
+    const {
+      mutate: login,
+    } = useLogin(
+      {
+        onSuccess: (resp: User): void => {
+          queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH);
+          navigate("/");
+        },
+        onError: (err: any): void => {
+          message.error(err.message);
+        }
+      }
+    )
+
+    const {
+      mutate: signup,
+      isLoading: isSignupLoading,
+    } = useSignup(
+      {
+        onSuccess: (resp: User): void => {
+          queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH);
+          navigate("/");
+        },
+        onError: (err: any): void => {
+          message.error(err.message);
+        }
+      }
+    )
 
     return (
       <div className="auth bg-two">
