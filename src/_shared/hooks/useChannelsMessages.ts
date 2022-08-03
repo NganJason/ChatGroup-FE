@@ -4,14 +4,14 @@ import { User } from "../apis/chat_group";
 import { channelsMessagesMap, message } from "../types/types";
 
 type useChannelsMessagesReturn = {
-  getMessages: (channelID: number) => message[];
-  addMessage: (senderInfo: User, channelID: number, content: string) => void
+  getMessages: (channelID: string) => message[];
+  addMessage: (senderInfo: User, channelID: string, content: string) => void
 };
 
 export const useChannelsMessages = (): useChannelsMessagesReturn => {
   const [channelsMessagesMap, setChannelsMessagesMap] = useState<channelsMessagesMap>({});
 
-  const getMessages = (channelID: number): message[] => {
+  const getMessages = (channelID: string): message[] => {
     if (channelID in channelsMessagesMap) {
         return channelsMessagesMap[channelID]
     }
@@ -25,7 +25,7 @@ export const useChannelsMessages = (): useChannelsMessagesReturn => {
     return newChannelsMessagesMap[channelID]
   }
 
-  const addMessage = (senderInfo: User, channelID: number, content: string): void => {
+  const addMessage = (senderInfo: User, channelID: string, content: string): void => {
     let newMessage: message = {
       message_id: (new Date()).getTime(),
       channel_id: channelID,

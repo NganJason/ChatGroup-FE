@@ -8,9 +8,9 @@ import { DataContext } from "../../../_shared/hooks/dataContext";
 import { User } from "../../../_shared/apis/chat_group";
 
 type ChatroomProps = {
-  currChannelID: number;
-  getMessages: (channelID: number) => message[]
-  addMessage: (senderInfo: User, channelID: number, content: string) => void
+  currChannelID: string;
+  getMessages: (channelID: string) => message[]
+  addMessage: (senderInfo: User, channelID: string, content: string) => void
 };
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {

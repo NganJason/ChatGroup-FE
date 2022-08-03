@@ -13,12 +13,12 @@ export const usersChannelsData: { [key: number]: userChannels } = {
     },
     channels: [
       {
-        channel_id: 123,
+        channel_id: "123",
         channel_name: "Front-end developers",
         unread: 2,
       },
       {
-        channel_id: 124,
+        channel_id: "124",
         channel_name: "PM and developers",
         unread: 1,
       },
@@ -34,7 +34,7 @@ export const usersChannelsData: { [key: number]: userChannels } = {
     },
     channels: [
       {
-        channel_id: 123,
+        channel_id: "123",
         channel_name: "Front-end developers",
         unread: 2,
       },
@@ -50,7 +50,7 @@ export const usersChannelsData: { [key: number]: userChannels } = {
     },
     channels: [
       {
-        channel_id: 124,
+        channel_id: "124",
         channel_name: "PM and developers",
         unread: 1,
       },

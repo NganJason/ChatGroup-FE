@@ -3,7 +3,18 @@ import {
     UseMutationOptions,
     UseMutationResult,
 } from "react-query"
-import { AuthLoginRequest, AuthLoginResponse, AuthSignupRequest, AuthSignupResponse, ChannelObj, CreateChannelRequest, CreateChannelResponse, NewChatGroupService, User } from "../apis/chat_group"
+import {
+  AuthLoginRequest,
+  AuthLoginResponse,
+  AuthSignupRequest,
+  AuthSignupResponse,
+  ChannelObj,
+  CreateChannelRequest,
+  CreateChannelResponse,
+  GetChannelMembersRequest,
+  NewChatGroupService,
+  User,
+} from "../apis/chat_group";
 
 export const useLogin = (
     options?: UseMutationOptions<

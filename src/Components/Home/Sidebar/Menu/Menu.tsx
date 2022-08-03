@@ -19,7 +19,6 @@ type MenuProps = {
   toggleMenu?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
-
 const Menu = (props: MenuProps): JSX.Element => {
     const { className, toggleMenu } = props;
     const navigate = useNavigate();
@@ -36,7 +35,7 @@ const Menu = (props: MenuProps): JSX.Element => {
     });
 
     const onLogout = () => {
-      logout()
+      logout();
     }
 
     return (

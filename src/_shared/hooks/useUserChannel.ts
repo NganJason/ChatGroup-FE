@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChannelObj, User } from "../apis/chat_group";
 import { useCreateChannel } from "../mutations/chat_group";
 import { ChatGroupQueryKey, useGetUserChannelsQuery } from "../queries/chat_group";
@@ -9,7 +9,7 @@ type useUserChannelReturn = {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
   channelsMap: channelsInfoMap;
-  clearUnread: (channelID: number) => void;
+  clearUnread: (channelID: string) => void;
   addChannel: (channelName: string) => void;
 };
 
@@ -24,12 +24,12 @@ export const useUserChannel = (): useUserChannelReturn => {
         var channelsMap: channelsInfoMap = {}
 
         for (var ch of resp) {
-          channelsMap[ch.channel_id || 0] = ch
+          channelsMap[ch.channel_id || ""] = ch
         }
 
         setChannelsMap(channelsMap)
       },
-      enabled: user !== {}
+      enabled: !!user.user_id
     })
 
     const {
@@ -42,7 +42,7 @@ export const useUserChannel = (): useUserChannelReturn => {
       }
     )
 
-    const clearUnread = (channelID: number) => {
+    const clearUnread = (channelID: string) => {
       if (!(channelID in channelsMap)) {
         return;
       }
