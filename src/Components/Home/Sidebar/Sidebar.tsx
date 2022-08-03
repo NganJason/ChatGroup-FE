@@ -12,17 +12,7 @@ import {
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
 import { DataContext } from "../../../_shared/hooks/dataContext";
 
-type SidebarProps = {
-  currChannelID: number;
-  setCurrChannelID: Dispatch<SetStateAction<number>>;
-};
-
-const Sidebar = (props: SidebarProps): JSX.Element => {
-  const {
-    currChannelID,
-    setCurrChannelID,
-  } = props;
-
+const Sidebar = (): JSX.Element => {
   const { 
     showSidebarMenu, 
     toggleShowSidebarMenu, 
@@ -31,11 +21,13 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
 
   const {
     user,
-    channelsMap
+    channelsMap,
+    setCurrChannel,
+    currChannel,
   } = useContext(DataContext)
 
-  const onChannelClick = (channelID: number) => {
-    setCurrChannelID(channelID)
+  const onChannelClick = (channelID: string) => {
+    setCurrChannel(channelID);
   }
 
   const toggleMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -62,10 +54,10 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
         {Object.keys(channelsMap).map((id) => (
           <Channel
             key={Number(id)}
-            channel={channelsMap[Number(id)]}
-            isSelected={Number(id) === currChannelID}
+            channel={channelsMap[(id)]}
+            isSelected={id === currChannel}
             onClick={() => {
-              onChannelClick(Number(id));
+              onChannelClick(id);
             }}
           />
         ))}

@@ -9,7 +9,7 @@ export type userInfo = {
 
 export type message = {
   message_id: number;
-  channel_id: number;
+  channel_id?: string;
   content: string;
   created_at: number;
   sender_info: userInfo;
@@ -31,13 +31,13 @@ export type channelMessages = {
 };
 
 export type channelsInfoMap = {
-  [channel_id: number]: ChannelObj;
+  [channel_id: string]: ChannelObj;
 };
 
 export type channelsMessagesMap = {
-  [channel_id: number]: message[];
+  [channel_id: string]: message[];
 }
 
 export type channelsMembersMap = {
-  [channel_id: number]: userInfo[];
+  [channel_id: string]: userInfo[];
 }

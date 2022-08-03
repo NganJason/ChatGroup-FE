@@ -4,7 +4,7 @@ export interface ValidateAuthRequest {}
 
 export interface ValidateAuthResponse {
   debug_msg?: string;
-  is_auth?: boolean;
+  user_info?: User;
 }
 export interface AuthLoginRequest {
   username?: string;
@@ -57,7 +57,8 @@ export interface CreateChannelResponse {
 }
 
 export interface GetChannelMessagesRequest {
-  channel_id?: number;
+  /** @format int64 */
+  channel_id?: string;
   from_unix_time?: number;
   to_unix_time?: number;
 }
@@ -68,7 +69,8 @@ export interface GetChannelMessagesResponse {
 }
 
 export interface GetChannelMembersRequest {
-  channel_id?: number;
+  /** @format int64 */
+  channel_id?: string;
   page_size?: number;
   page_number?: number;
 }
@@ -79,7 +81,7 @@ export interface GetChannelMembersResponse {
 }
 
 export interface CreateMessageRequest {
-  channel_id?: number;
+  channel_id?: string;
   content?: string;
 }
 
@@ -89,7 +91,7 @@ export interface CreateMessageResponse {
 }
 
 export interface AddUsersToChannelRequest {
-  channel_id?: number;
+  channel_id?: string;
   user_ids?: number[];
 }
 
@@ -105,7 +107,8 @@ export interface User {
 }
 
 export interface ChannelObj {
-  channel_id?: number;
+  /** @format int64 */
+  channel_id?: string;
   channel_name?: string;
   channel_desc?: string;
   unread?: number;
@@ -222,7 +225,7 @@ class ChatGroup {
     let url: string = this.baseUrl + "user/channels"
 
     try {
-      let resp = await axios.post(url, {}, { withCredentials: true });
+      let resp:string = await axios.post(url, {}, { withCredentials: true });
 
       return handleResp(resp);
     } catch (err: any) {
@@ -257,7 +260,7 @@ class ChatGroup {
   }
 
   async getChannelMembers(
-    channelID: number,
+    channelID: string,
   ): Promise<GetChannelMembersResponse> {
     let url: string = this.baseUrl + "channel/members"
 
@@ -279,7 +282,7 @@ class ChatGroup {
 
 const handleResp = (resp: any):any => {
     if (resp.data.debug_msg && resp.data.debug_msg !== "") {
-        throw new Error(resp.dat.debug_msg)
+        throw new Error(resp.data.debug_msg)
     }
 
     return resp.data

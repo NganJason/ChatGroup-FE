@@ -1,10 +1,10 @@
 import { channelMembers } from "../_shared/types/types";
 
 // GET /api/channel/members
-const channelsMembersData: { [key: number]: channelMembers } = {
-  123: {
+const channelsMembersData: { [key: string]: channelMembers } = {
+  "123": {
     channel_info: {
-      channel_id: 123,
+      channel_id: "123",
       channel_name: "Front-end developers",
       unread: 2,
     },
@@ -25,9 +25,9 @@ const channelsMembersData: { [key: number]: channelMembers } = {
       },
     ],
   },
-  124: {
+  "124": {
     channel_info: {
-      channel_id: 124,
+      channel_id: "124",
       channel_name: "PM and developers",
       unread: 1,
     },
@@ -50,6 +50,6 @@ const channelsMembersData: { [key: number]: channelMembers } = {
   },
 };
 
-export const getChannelMembers = (channelID: number): channelMembers => {
+export const getChannelMembers = (channelID: string): channelMembers => {
   return channelsMembersData[channelID];
 }

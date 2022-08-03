@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
+import { User } from "../../../../_shared/apis/chat_group";
 import Text from "../../../../_shared/Components/Text/Text";
 import { ModalContext } from "../../../../_shared/hooks/showModalContext";
-import { userInfo } from "../../../../_shared/types/types";
 
 type ChannelInfoProps = {
-    members: userInfo[]
+    members: User[]
 }
 
 const ChannelInfo = (props: ChannelInfoProps): JSX.Element => {
@@ -30,9 +30,15 @@ const ChannelInfo = (props: ChannelInfoProps): JSX.Element => {
         <div className="members">
           {members.map((user) => (
             <div className="member">
-              <img className="member__img" src={user.profile_url} />
+              <img
+                className="member__img"
+                src={
+                  user.photo_url ||
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                }
+              />
               <Text color="primary" bd="500">
-                {user.user_name}
+                {user.username}
               </Text>
             </div>
           ))}

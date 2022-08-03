@@ -6,7 +6,6 @@ import Nav from "./Nav/Nav";
 import Sidebar from "./Sidebar/Sidebar";
 import AddChannelModal from "./AddChannelModal/AddChannelModal";
 
-import { useUserChannel } from "../../_shared/hooks/useUserChannel";
 import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
 import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
 import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
@@ -17,10 +16,14 @@ import { DataContext } from "../../_shared/hooks/dataContext";
 const { Sider, Content } = Layout;
 
 const Home = (): JSX.Element => {
-  const { user, channelsMap, clearUnread, addChannel } = useContext(DataContext);
+  const { 
+    channelsMap, 
+    addChannel, 
+    currChannel, 
+    setCurrChannel 
+  } = useContext(DataContext);
   const { getMessages, addMessage } = useChannelsMessages()
-  const { getMembers } = useChannelsMembers()
-  const [currChannelID, setCurrChannelID] = useState<number>(0)
+  const { getCurrChannelMembers } = useChannelsMembers(currChannel);
 
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
@@ -35,19 +38,14 @@ const Home = (): JSX.Element => {
   }, [width])
 
   useEffect(() => {
-    clearUnread(currChannelID);
-  }, [currChannelID]);
+    if (currChannel === "" || !currChannel) {
+      let firstID = Object.keys(channelsMap)[0];
 
-  useEffect(() => {
-    if (currChannelID === 0) {
-      let firstID = parseInt(Object.keys(channelsMap)[0]);
-      
-      if (!isNaN(firstID)) {
-        setCurrChannelID(firstID);
+      if (firstID !== "") {
+        setCurrChannel(firstID);
       }
-      
     }
-  }, [channelsMap])
+  }, [channelsMap, currChannel])
 
   const toggleSideBar = () => {
     setShowSideBar(!showSideBar)
@@ -66,23 +64,18 @@ const Home = (): JSX.Element => {
           width={"18rem"}
           className={`bg-one sider ${!showSideBar ? "disable" : ""}`}
         >
-          <Sidebar
-            currChannelID={currChannelID}
-            setCurrChannelID={setCurrChannelID}
-          />
+          <Sidebar />
         </Sider>
         <Layout className="body">
           <div className="bg-two header shadow">
             <Nav
-              currChannelID={currChannelID}
               channelsMap={channelsMap}
-              getMembers={getMembers}
               toggleSideBar={toggleSideBar}
             />
           </div>
           <Content className="bg-two content">
             <Chatroom
-              currChannelID={currChannelID}
+              currChannelID={currChannel}
               getMessages={getMessages}
               addMessage={addMessage}
             ></Chatroom>
@@ -90,7 +83,7 @@ const Home = (): JSX.Element => {
         </Layout>
       </Layout>
       <AddChannelModal addChannel={addChannel} />
-      <AddMemberModal/>
+      <AddMemberModal />
     </>
   );
 };

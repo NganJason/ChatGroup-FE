@@ -1,17 +1,17 @@
 import { channelMessages } from "../_shared/types/types";
 
 // GET /api/channel/messages
-export const channelsMessagesData: { [key: number]: channelMessages } = {
-  123: {
+export const channelsMessagesData: { [key: string]: channelMessages } = {
+  "123": {
     channel_info: {
-      channel_id: 123,
+      channel_id: "123",
       channel_name: "Front-end developers",
       unread: 2,
     },
     messages: [
       {
         message_id: 1,
-        channel_id: 123,
+        channel_id: "123",
         content: "hi my name is Jason",
         created_at: 1234512,
         sender_info: {
@@ -24,7 +24,7 @@ export const channelsMessagesData: { [key: number]: channelMessages } = {
       },
       {
         message_id: 2,
-        channel_id: 123,
+        channel_id: "123",
         content: "hi my name is Peter",
         created_at: 1234512,
         sender_info: {
@@ -37,16 +37,16 @@ export const channelsMessagesData: { [key: number]: channelMessages } = {
       },
     ],
   },
-  124: {
+  "124": {
     channel_info: {
-      channel_id: 124,
+      channel_id: "124",
       channel_name: "PM and developers",
       unread: 1,
     },
     messages: [
       {
         message_id: 3,
-        channel_id: 124,
+        channel_id: "124",
         content: "hi I'm John Goh",
         created_at: 1234514,
         sender_info: {
@@ -61,6 +61,6 @@ export const channelsMessagesData: { [key: number]: channelMessages } = {
   },
 };
 
-export const getChannelMessages = (channelID: number): channelMessages => {
+export const getChannelMessages = (channelID: string): channelMessages => {
   return channelsMessagesData[channelID];
 }

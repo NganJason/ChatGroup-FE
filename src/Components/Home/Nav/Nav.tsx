@@ -2,20 +2,19 @@ import React, { useContext } from "react";
 
 import Text from "../../../_shared/Components/Text/Text";
 import { MenuOutlined, UserOutlined } from "@ant-design/icons";
-import { channelsInfoMap, userInfo } from "../../../_shared/types/types";
+import { channelsInfoMap } from "../../../_shared/types/types";
 import ChannelInfo from "./ChannelInfo/ChannelInfo";
-import { getChannelMembers } from "../../../mock_data/get_channel_members";
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
+import { DataContext } from "../../../_shared/hooks/dataContext";
 
 type NavProps = {
-  currChannelID: number;
   channelsMap: channelsInfoMap;
-  getMembers: (channelID: number) => userInfo[]
   toggleSideBar: () => void;
 };
 const Nav = (props: NavProps): JSX.Element => {
-  const { toggleSideBar, currChannelID, channelsMap } = props
+  const { toggleSideBar, channelsMap } = props
   const { toggleShowChannelInfo } = useContext(ModalContext)
+  const { currChannel, getCurrChannelMembers } = useContext(DataContext)
 
   const toggleChannelInfo = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
@@ -29,16 +28,12 @@ const Nav = (props: NavProps): JSX.Element => {
         onClick={toggleSideBar}
       />
       <Text size="1.1rem" bd="700" align="left">
-        {channelsMap[currChannelID]
-          ? channelsMap[currChannelID].channel_name
-          : ""}
+        {channelsMap[currChannel] ? channelsMap[currChannel].channel_name : ""}
       </Text>
 
       <div className="nav-info" onClick={toggleChannelInfo}>
         <UserOutlined className="icon secondary" />
-        <ChannelInfo
-          members={getChannelMembers(currChannelID)?.members || []}
-        />
+        <ChannelInfo members={getCurrChannelMembers()} />
       </div>
     </div>
   );
