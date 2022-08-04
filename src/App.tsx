@@ -20,6 +20,12 @@ function App() {
     onSuccess: (user: User) => {
       if (!user || !user.user_id) {
         setUser({})
+
+        let path = window.location.pathname
+
+        if (path !== "/signup" && path !== "/login") {
+          
+        }
       } else {
         setUser(user)
       }

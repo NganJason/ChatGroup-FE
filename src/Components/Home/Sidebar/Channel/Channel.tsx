@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ChannelObj } from "../../../../_shared/apis/chat_group";
 
 import Text from "../../../../_shared/Components/Text/Text"
 
 type ChannelProps = {
   channel: ChannelObj;
-  isSelected: boolean;
-  onClick: React.MouseEventHandler
+  selected: boolean;
+  onClick: React.MouseEventHandler;
 };
 
 const Channel = (props: ChannelProps): JSX.Element => {
-  const { channel, isSelected } = props;
+  const { channel, selected } = props;
   return (
-    <div className={`channel ${isSelected ? "bg-four" : ""}`} {...props}>
+    <div className={`channel ${selected ? "bg-four" : ""}`} {...props}>
       {channel && (
         <>
           <div className="channel__icon bg-two">

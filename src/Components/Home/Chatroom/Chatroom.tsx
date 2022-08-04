@@ -2,20 +2,15 @@ import React, { useState, useContext } from "react";
 
 import { Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
-import Message from "./Message/Message";
-import { message } from "../../../_shared/types/types";
 import { DataContext } from "../../../_shared/hooks/dataContext";
-import { User } from "../../../_shared/apis/chat_group";
+import Message from "./Message/Message";
 
-type ChatroomProps = {
-  currChannelID: string;
-  getMessages: (channelID: string) => message[]
-  addMessage: (senderInfo: User, channelID: string, content: string) => void
-};
+type ChatroomProps = {};
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {
-  const { currChannelID, getMessages, addMessage } = props;
-  const { user } = useContext(DataContext)
+  const {currChannel, addMessage, messageLoading, channelsMessagesMap} = useContext(
+    DataContext
+  )
 
   const [rows, setRows] = useState<number>(1)
   const [value, setValue] = useState<string>("")
@@ -54,19 +49,22 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
   }
 
   const addMsgHandler = (): void => {
-    addMessage(user, currChannelID, value);
+    addMessage(currChannel, value);
     setValue("")
   }
 
   return (
     <div className="chatroom">
       <div className="chatbox">
-        {getMessages(currChannelID) ? (
-          getMessages(currChannelID).map((msg) => (
-            <Message key={msg.message_id} msg={msg} />
-          ))
-        ) : (
+        {messageLoading ||
+        !channelsMessagesMap ||
+        !channelsMessagesMap[currChannel] ? (
           <div></div>
+        ) : (
+          channelsMessagesMap[currChannel].messages
+            .map((message) => {
+              return <Message key={message.message_id} msg={message} />;
+            })
         )}
       </div>
       <div className="input">
@@ -78,7 +76,12 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
           onChange={onInputChange}
           onKeyDown={onKeyDown}
         ></Input.TextArea>
-        <Button size="small" type="primary" icon={<SendOutlined />} onClick={addMsgHandler}/>
+        <Button
+          size="small"
+          type="primary"
+          icon={<SendOutlined />}
+          onClick={addMsgHandler}
+        />
       </div>
     </div>
   );

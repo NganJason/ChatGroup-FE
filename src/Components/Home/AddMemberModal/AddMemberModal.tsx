@@ -4,10 +4,12 @@ import Text from "../../../_shared/Components/Text/Text";
 import DebounceSelectInput from "./DebounceSelectInput/DebounceSelectInput";
 import { Button } from "antd";
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
+import { DataContext } from "../../../_shared/hooks/dataContext";
 
 const AddMemberModal = (): JSX.Element => {
   const { showAddMemberModal, toggleShowAddMemberModal } = useContext(ModalContext)
-  const [ input, setInput ] = useState([])
+  const { addMembers, currChannel } = useContext(DataContext)
+  const [ input, setInput ] = useState<any>([])
   
   const stopPropagate = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
@@ -16,6 +18,14 @@ const AddMemberModal = (): JSX.Element => {
 
   const onSaveHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
+
+    let userIDs: string[] = []
+
+    for (var user of input) {
+      userIDs.push(user.value)
+    }
+
+    addMembers(currChannel, userIDs)
 
     toggleShowAddMemberModal()
     setInput([])

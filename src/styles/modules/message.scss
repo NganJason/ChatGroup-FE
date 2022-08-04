@@ -6,6 +6,10 @@
     }
 }
 
+.sender {
+    flex-direction: row-reverse;
+}
+
 .message__img {
     width: 2.5rem;
 
@@ -24,4 +28,13 @@
         margin: auto 0;
         margin-right: 1.2rem;
     }
+
+    &.sender > p {
+        margin-right: 0rem;
+        margin-left: 1.2rem;
+    }
+}
+
+.message__body.sender {
+    text-align: right;
 }

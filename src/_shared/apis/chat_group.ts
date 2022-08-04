@@ -278,6 +278,80 @@ class ChatGroup {
       throw err;
     }
   }
+
+  async addMembers(
+    channelID: string,
+    userIDs: string[],
+  ): Promise<AddUsersToChannelResponse> {
+    let url: string = this.baseUrl + "channel/add_users"
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          channel_id: channelID,
+          user_ids: userIDs,
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err
+    }
+  }
+
+  async getMessages(
+    channelID: string,
+    pageSize?: number,
+    fromTime?:  number,
+  ): Promise<GetChannelMessagesResponse> {
+    let url: string = this.baseUrl + "channel/messages"
+    if (!channelID || channelID === "") {
+      throw new Error("channelID cannot be empty")
+    }
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          channel_id: channelID,
+          from_unix_time: fromTime,
+          page_size: pageSize,
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err;
+    }
+  }
+
+  async createMessage(
+    channelID: string,
+    content: string,
+  ): Promise<CreateMessageResponse> {
+    let url: string = this.baseUrl + "message/create"
+    if (!channelID || channelID === "") {
+      throw new Error("channelID cannot be empty");
+    }
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          channel_id: channelID,
+          content: content,
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err;
+    }
+  }
 }
 
 const handleResp = (resp: any):any => {

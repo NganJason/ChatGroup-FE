@@ -1,4 +1,5 @@
 import { Select, Spin } from "antd";
+import axios from "axios";
 import lodash from "lodash";
 import React, { useMemo, useRef, useState } from "react";
 
@@ -36,18 +37,21 @@ function DebounceSelect({ fetchOptions= (input: any)=>{return new Promise(()=>{}
       options={options}
     />
   );
-} // Usage of DebounceSelect
+}
 
 async function fetchUserList(username: string): Promise<any> {
-  console.log("fetching user", username);
-  return fetch("https://randomuser.me/api/?results=5")
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map((user: any) => ({
-        label: `${user.name.first} ${user.name.last}`,
-        value: user.login.username,
-      }))
-    );
+  return axios
+    .post("http://localhost:8082/api/user/search", { keyword: username })
+    .then((resp) => {
+      
+      let users = resp.data.users
+      console.log(users)
+
+      return users.map((user: any) => ({
+        label: `${user.username}`,
+        value: user.user_id,
+      }));
+    })
 }
 
 type DebounceSelectInputProps = {
