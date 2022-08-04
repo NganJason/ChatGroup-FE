@@ -54,8 +54,8 @@ const Sidebar = (): JSX.Element => {
         {Object.keys(channelsMap).map((id) => (
           <Channel
             key={Number(id)}
-            channel={channelsMap[(id)]}
-            isSelected={id === currChannel}
+            channel={channelsMap[id]}
+            selected={id === currChannel}
             onClick={() => {
               onChannelClick(id);
             }}

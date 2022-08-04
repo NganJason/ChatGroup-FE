@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChannelObj, User } from "../apis/chat_group";
 import { useCreateChannel } from "../mutations/chat_group";
 import { ChatGroupQueryKey, useGetUserChannelsQuery } from "../queries/chat_group";
@@ -29,7 +29,9 @@ export const useUserChannel = (): useUserChannelReturn => {
 
         setChannelsMap(channelsMap)
       },
-      enabled: !!user.user_id
+      enabled: !!user.user_id,
+      retry: 2,
+      refetchOnWindowFocus: false,
     })
 
     const {

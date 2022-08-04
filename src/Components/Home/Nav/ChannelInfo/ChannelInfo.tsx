@@ -29,7 +29,7 @@ const ChannelInfo = (props: ChannelInfoProps): JSX.Element => {
       >
         <div className="members">
           {members.map((user) => (
-            <div className="member">
+            <div key={user.user_id || 0} className="member">
               <img
                 className="member__img"
                 src={

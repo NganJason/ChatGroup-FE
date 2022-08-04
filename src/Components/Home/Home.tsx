@@ -6,9 +6,7 @@ import Nav from "./Nav/Nav";
 import Sidebar from "./Sidebar/Sidebar";
 import AddChannelModal from "./AddChannelModal/AddChannelModal";
 
-import { useChannelsMessages } from "../../_shared/hooks/useChannelsMessages";
 import { useWindowDimensions } from "../../_shared/hooks/useWindowDimensions";
-import { useChannelsMembers } from "../../_shared/hooks/useChannelsMembers";
 import { ModalContext } from "../../_shared/hooks/showModalContext";
 import AddMemberModal from "./AddMemberModal/AddMemberModal";
 import { DataContext } from "../../_shared/hooks/dataContext";
@@ -22,9 +20,6 @@ const Home = (): JSX.Element => {
     currChannel, 
     setCurrChannel 
   } = useContext(DataContext);
-  const { getMessages, addMessage } = useChannelsMessages()
-  const { getCurrChannelMembers } = useChannelsMembers(currChannel);
-
   const { width } = useWindowDimensions()
   const [ showSideBar, setShowSideBar ] = useState<boolean>(width > 600);
   const { setShowChannelInfo, setShowSidebarMenu, setShowAddMemberModal } = useContext(ModalContext)
@@ -68,17 +63,10 @@ const Home = (): JSX.Element => {
         </Sider>
         <Layout className="body">
           <div className="bg-two header shadow">
-            <Nav
-              channelsMap={channelsMap}
-              toggleSideBar={toggleSideBar}
-            />
+            <Nav channelsMap={channelsMap} toggleSideBar={toggleSideBar} />
           </div>
           <Content className="bg-two content">
-            <Chatroom
-              currChannelID={currChannel}
-              getMessages={getMessages}
-              addMessage={addMessage}
-            ></Chatroom>
+            <Chatroom />
           </Content>
         </Layout>
       </Layout>

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { getChannelMembers } from "../../mock_data/get_channel_members";
-import { User } from "../apis/chat_group";
-import { useGetChannelMembersQuery } from "../queries/chat_group";
-import { channelsMembersMap, userInfo } from "../types/types";
+import React from "react";
+import { NewChatGroupService, User } from "../apis/chat_group";
+import { ChatGroupQueryKey, useGetChannelMembersQuery } from "../queries/chat_group";
+import { useQueryClient } from "react-query";
 
 type useChannelsMembersReturn = {
   getCurrChannelMembers: () => User[];
+  addMembers: (channelID: string, userIDs: string[]) => void
 };
 
 export const useChannelsMembers = (channelID: string): useChannelsMembersReturn => {
-    const [channelsMembersMap, setChannelsMembersMap] = useState<channelsMembersMap>({})
+  const queryClient = useQueryClient();
 
     const { data: members } = useGetChannelMembersQuery(
         channelID,
@@ -20,20 +20,25 @@ export const useChannelsMembers = (channelID: string): useChannelsMembersReturn 
     )
     
     const getCurrChannelMembers = (): User[] => {
-      // if (channelID in channelsMembersMap) {
-      //     return channelsMembersMap[channelID];
-      // }
-
-      // let newChannelsMembersMap = {...channelsMembersMap};
-      // newChannelsMembersMap[channelID] = getChannelMembers(channelID).members;
-      // setChannelsMembersMap(newChannelsMembersMap)
-
-      // return newChannelsMembersMap[channelID]
-      
       return members || [];
     };
 
+    const addMembers = (
+      channelID: string,
+      userIDs: string[],
+    ) => {
+      let service = NewChatGroupService()
+
+      service.addMembers(
+        channelID,
+        userIDs
+      ).then(() => {
+        queryClient.invalidateQueries([ChatGroupQueryKey.GET_CHANNEL_MEMBERS, channelID]);
+      })
+    }
+
     return {
       getCurrChannelMembers,
+      addMembers,
     };
 }

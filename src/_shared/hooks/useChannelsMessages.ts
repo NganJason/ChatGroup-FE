@@ -1,53 +1,94 @@
-import React, { useState } from "react";
-import { getChannelMessages } from "../../mock_data/get_channel_messages";
-import { User } from "../apis/chat_group";
-import { channelsMessagesMap, message } from "../types/types";
+import React, { useState, useEffect } from "react";
+
+import { NewChatGroupService } from "../apis/chat_group";
+import { channelsMessagesMap } from "../types/types";
 
 type useChannelsMessagesReturn = {
-  getMessages: (channelID: string) => message[];
-  addMessage: (senderInfo: User, channelID: string, content: string) => void
+  addMessage: (channelID: string, content: string) => void;
+  messageLoading: boolean;
+  channelsMessagesMap: channelsMessagesMap;
 };
 
-export const useChannelsMessages = (): useChannelsMessagesReturn => {
-  const [channelsMessagesMap, setChannelsMessagesMap] = useState<channelsMessagesMap>({});
+export const useChannelsMessages = (
+  currChannelID: string
+): useChannelsMessagesReturn => {
+  const [channelsMessagesMap, setChannelsMessagesMap] =
+    useState<channelsMessagesMap>({});
+  const [messageLoading, setMessageLoading] = useState<boolean>(false);
 
-  const getMessages = (channelID: string): message[] => {
-    if (channelID in channelsMessagesMap) {
-        return channelsMessagesMap[channelID]
+  useEffect(() => {
+    let channelMessagesInfo = channelsMessagesMap[currChannelID];
+    let service = NewChatGroupService();
+
+    if (!channelMessagesInfo || !channelMessagesInfo.last_fetched) {
+      setMessageLoading(true);
+
+      service
+        .getMessages(
+          currChannelID, 
+          100,
+        )
+        .then((resp) => {
+          setChannelsMessagesMap({
+            ...channelsMessagesMap,
+            [currChannelID]: {
+              messages: resp.messages || [],
+            },
+          });
+        })
+        .finally(() => {
+          setMessageLoading(false);
+        });
+    }
+  }, [currChannelID]);
+
+  const fetchNext = (channelID: string): void => {
+    let channelMessagesInfo = channelsMessagesMap[channelID];
+    if (!channelMessagesInfo) {
+      return
     }
 
-    let newChannelsMessagesMap = {...channelsMessagesMap}
-    let messagesData = getChannelMessages(channelID);
+    let lastMsgTime = channelMessagesInfo.messages[channelMessagesInfo.messages.length -1].created_at
 
-    newChannelsMessagesMap[channelID] = messagesData && messagesData.messages;
-    setChannelsMessagesMap(newChannelsMessagesMap)
-
-    return newChannelsMessagesMap[channelID]
+    let service = NewChatGroupService()
+    service.getMessages(
+      channelID,
+      100,
+      lastMsgTime,
+    )
+    .then((resp) => {
+      setChannelsMessagesMap({
+        ...channelsMessagesMap,
+        [channelID]: {
+          messages: [
+            ...channelsMessagesMap[channelID].messages,
+            ...(resp.messages || []),
+          ],
+        },
+      });
+    })
   }
 
-  const addMessage = (senderInfo: User, channelID: string, content: string): void => {
-    let newMessage: message = {
-      message_id: (new Date()).getTime(),
-      channel_id: channelID,
-      content: content,
-      created_at: (new Date()).getTime(),
-      sender_info: {}
-    }
+  const addMessage = (channelID: string, content: string): void => {
+    let service = NewChatGroupService();
 
-    setChannelsMessagesMap((prev) => {
-      let newMap = {...prev}
-
-      if (!newMap[channelID]) {
-        newMap[channelID] = []
-      }
-
-      newMap[channelID] = [newMessage, ...newMap[channelID]]
-
-      return newMap
+    service.createMessage(channelID, content).then((resp) => {
+      setChannelsMessagesMap({
+        ...channelsMessagesMap,
+        [channelID]: {
+          last_fetched: channelsMessagesMap[channelID].last_fetched,
+          messages: [
+            resp.message || {},
+            ...channelsMessagesMap[channelID].messages,
+          ],
+        },
+      });
     });
-  }
+  };
 
   return {
-    getMessages, addMessage
-  }
+    addMessage,
+    messageLoading,
+    channelsMessagesMap,
+  };
 };
