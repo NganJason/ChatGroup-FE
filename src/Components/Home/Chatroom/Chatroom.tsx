@@ -8,7 +8,7 @@ import Message from "./Message/Message";
 type ChatroomProps = {};
 
 const Chatroom = (props: ChatroomProps): JSX.Element => {
-  const {currChannel, addMessage, messageLoading, channelsMessagesMap} = useContext(
+  const {currChannel, createMessage, messageLoading, channelsMessagesMap} = useContext(
     DataContext
   )
 
@@ -49,7 +49,7 @@ const Chatroom = (props: ChatroomProps): JSX.Element => {
   }
 
   const addMsgHandler = (): void => {
-    addMessage(currChannel, value);
+    createMessage(currChannel, value);
     setValue("")
   }
 

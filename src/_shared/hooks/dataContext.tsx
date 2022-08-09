@@ -1,5 +1,5 @@
 import { useState, createContext } from "react";
-import { User } from "../apis/chat_group";
+import { Message, User } from "../apis/chat_group";
 import { channelsInfoMap, channelsMessagesMap } from "../types/types";
 import { useChannelsMembers } from "./useChannelsMembers";
 import { useChannelsMessages } from "./useChannelsMessages";
@@ -15,9 +15,10 @@ export const DataContext = createContext({
   setCurrChannel: (input: string) => {},
   getCurrChannelMembers: () => [] as User[],
   addMembers: (channelID: string, userIDs: string[]) => {},
-  addMessage: (channelID: string, content: string) => {},
+  createMessage: (channelID: string, content: string) => {},
   channelsMessagesMap: {} as channelsMessagesMap,
   messageLoading: false,
+  addMessage: (channelID: string, message: Message) => {},
 });
 
 type DataProviderProps = {
@@ -47,9 +48,10 @@ export const DataProvider = (props: DataProviderProps) => {
     } = useChannelsMembers(currChannel);
 
     const {
-      addMessage, 
+      createMessage, 
       channelsMessagesMap, 
-      messageLoading
+      messageLoading,
+      addMessage,
     } = useChannelsMessages(currChannel)
 
     return (
@@ -64,9 +66,10 @@ export const DataProvider = (props: DataProviderProps) => {
           setCurrChannel,
           getCurrChannelMembers,
           addMembers,
-          addMessage,
+          createMessage,
           channelsMessagesMap,
           messageLoading,
+          addMessage,
         }}
       >
         {children}
