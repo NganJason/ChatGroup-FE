@@ -45,7 +45,6 @@ async function fetchUserList(username: string): Promise<any> {
     .then((resp) => {
       
       let users = resp.data.users
-      console.log(users)
 
       return users.map((user: any) => ({
         label: `${user.username}`,

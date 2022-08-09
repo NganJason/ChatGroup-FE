@@ -8,6 +8,7 @@ type useChannelsMessagesReturn = {
   messageLoading: boolean;
   channelsMessagesMap: channelsMessagesMap;
   addMessage: (channelID: string, message: Message) => void;
+  fetchNext: (channelID: string) => void;
 };
 
 export const useChannelsMessages = (
@@ -46,10 +47,6 @@ export const useChannelsMessages = (
         });
     }
   }, [currChannelID]);
-
-  useEffect(() => {
-    console.log(channelsMessagesMap)
-  }, [channelsMessagesMap])
 
   const addMessage = (channelID: string, message?: Message): void => {
     setChannelsMessagesMap((prev) => {
@@ -105,5 +102,6 @@ export const useChannelsMessages = (
     messageLoading,
     channelsMessagesMap,
     addMessage,
+    fetchNext,
   };
 };

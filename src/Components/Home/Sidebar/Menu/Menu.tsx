@@ -1,5 +1,4 @@
 import React from "react"
-import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "react-query";
 
 import Text from "../../../../_shared/Components/Text/Text";
@@ -21,13 +20,11 @@ type MenuProps = {
 
 const Menu = (props: MenuProps): JSX.Element => {
     const { className, toggleMenu } = props;
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     const { mutate: logout } = useLogout({
       onSuccess: (): void => {
         queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH);
-        navigate("/login");
       },
       onError: (err: any): void => {
         message.error(err.message);

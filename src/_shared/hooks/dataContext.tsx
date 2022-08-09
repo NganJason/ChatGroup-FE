@@ -19,6 +19,7 @@ export const DataContext = createContext({
   channelsMessagesMap: {} as channelsMessagesMap,
   messageLoading: false,
   addMessage: (channelID: string, message: Message) => {},
+  fetchNext: (channelID: string) => {},
 });
 
 type DataProviderProps = {
@@ -52,6 +53,7 @@ export const DataProvider = (props: DataProviderProps) => {
       channelsMessagesMap, 
       messageLoading,
       addMessage,
+      fetchNext,
     } = useChannelsMessages(currChannel)
 
     return (
@@ -70,6 +72,7 @@ export const DataProvider = (props: DataProviderProps) => {
           channelsMessagesMap,
           messageLoading,
           addMessage,
+          fetchNext,
         }}
       >
         {children}
