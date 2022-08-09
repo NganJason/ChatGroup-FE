@@ -90,6 +90,12 @@ export interface CreateMessageResponse {
   message?: Message;
 }
 
+export interface CreateSocketRequest {}
+
+export interface CreateSocketResponse {
+  debug_msg?: string;
+}
+
 export interface AddUsersToChannelRequest {
   channel_id?: string;
   user_ids?: number[];
@@ -120,6 +126,12 @@ export interface Message {
   content?: string;
   created_at?: number;
   sender?: User;
+}
+
+export enum eventType {
+ SERVER_EVENT = 0,
+ CLIENT_SEND_MSG_EVENT = 1,
+ CLIENT_JOIN_CHANNEL_EVENT = 2,
 }
 
 export const NewChatGroupService = (): ChatGroup => {

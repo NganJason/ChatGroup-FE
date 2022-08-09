@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { NewChatGroupService } from "../apis/chat_group";
+import { Message, NewChatGroupService } from "../apis/chat_group";
 import { channelsMessagesMap } from "../types/types";
 
 type useChannelsMessagesReturn = {
-  addMessage: (channelID: string, content: string) => void;
+  createMessage: (channelID: string, content: string) => void;
   messageLoading: boolean;
   channelsMessagesMap: channelsMessagesMap;
+  addMessage: (channelID: string, message: Message) => void;
 };
 
 export const useChannelsMessages = (
@@ -17,6 +18,10 @@ export const useChannelsMessages = (
   const [messageLoading, setMessageLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!currChannelID || currChannelID === "") {
+      return
+    }
+    
     let channelMessagesInfo = channelsMessagesMap[currChannelID];
     let service = NewChatGroupService();
 
@@ -41,6 +46,24 @@ export const useChannelsMessages = (
         });
     }
   }, [currChannelID]);
+
+  useEffect(() => {
+    console.log(channelsMessagesMap)
+  }, [channelsMessagesMap])
+
+  const addMessage = (channelID: string, message?: Message): void => {
+    setChannelsMessagesMap((prev) => {
+      return {
+        ...prev,
+        [channelID]: {
+          messages: [
+            message || {},
+            ...prev[channelID].messages,
+          ]
+        }
+      }
+    });
+  };
 
   const fetchNext = (channelID: string): void => {
     let channelMessagesInfo = channelsMessagesMap[channelID];
@@ -69,26 +92,18 @@ export const useChannelsMessages = (
     })
   }
 
-  const addMessage = (channelID: string, content: string): void => {
+  const createMessage = (channelID: string, content: string): void => {
     let service = NewChatGroupService();
 
     service.createMessage(channelID, content).then((resp) => {
-      setChannelsMessagesMap({
-        ...channelsMessagesMap,
-        [channelID]: {
-          last_fetched: channelsMessagesMap[channelID].last_fetched,
-          messages: [
-            resp.message || {},
-            ...channelsMessagesMap[channelID].messages,
-          ],
-        },
-      });
+      addMessage(channelID, resp.message)
     });
   };
 
   return {
-    addMessage,
+    createMessage,
     messageLoading,
     channelsMessagesMap,
+    addMessage,
   };
 };
