@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import './App.css';
 import './styles/main.scss'
 
@@ -15,24 +15,33 @@ import { eventType, User } from './_shared/apis/chat_group';
 import { closeSocket, getSocket } from './_shared/apis/chat_group_socket';
 
 function App() {
+  const navigate = useNavigate();
   const {setUser, addMessage} = useContext(DataContext)
   const { data: user, isLoading: isValidateAuthLoading } = useValidateAuthQuery({
     onSuccess: (user: User) => {
       if (!user || !user.user_id) {
         setUser({})
-
-        let path = window.location.pathname
-
-        if (path !== "/signup" && path !== "/login") {
-          
-        }
       } else {
         setUser(user)
       }
     },
+    onError: () => {
+      setUser({});      
+    },
+    refetchInterval: 30 * 1000,
     retry: 0,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    if (!user || !user.user_id) {
+      let path = window.location.pathname;
+
+      if (path !== "/signup" && path !== "/login") {
+        navigate("/login");
+      }
+    }
+  }, [user])
 
   useEffect(() => {
     if (!user || !user.user_id) {
@@ -46,7 +55,6 @@ function App() {
 
           switch(data.event_type) {
             case eventType.SERVER_EVENT: {
-              console.log(data.message)
               break;
             }
             case eventType.CLIENT_SEND_MSG_EVENT: {
@@ -67,7 +75,7 @@ function App() {
       {isValidateAuthLoading ? (
         <div>loading</div>
       ) : (
-        <BrowserRouter>
+        
           <Routes>
             <Route element={<AuthRoute isAuth={!(!user || !user.user_id)} />}>
               <Route path="/login" element={<Auth />} />
@@ -79,7 +87,6 @@ function App() {
               <Route path="/" element={<Home />} />
             </Route>
           </Routes>
-        </BrowserRouter>
       )}
     </div>
   );

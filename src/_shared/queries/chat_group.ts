@@ -25,7 +25,7 @@ export const useValidateAuthQuery = <TData = boolean>(
 
             return response.user_info ?? {}
         } catch (err) {
-            throw err
+            return {}
         }
     };
 
