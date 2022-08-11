@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from "react";
+import React, { useContext } from "react";
 
 import { Button } from "antd";
 import Channel from "./Channel/Channel";
@@ -35,6 +35,15 @@ const Sidebar = (): JSX.Element => {
     toggleShowSidebarMenu()
   }
 
+  const onFileSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if ((event.target as HTMLInputElement).files) {
+
+      if (event.target.files && event.target.files.length > 0) {
+        console.log(event.target.files[0]);
+      }
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="header shadow">
@@ -64,12 +73,18 @@ const Sidebar = (): JSX.Element => {
       </div>
 
       <div className="footer bg-three">
-        <img
-          src={
-            user.photo_url ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          }
-        />
+        <div className="user__img">
+          <img
+            src={
+              user.photo_url ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            }
+          />
+          <input
+            type="file"
+            onChange={onFileSubmit}
+          />
+        </div>
         <Text bd="700" align="left" color="tertiary">
           {user.username}
         </Text>
