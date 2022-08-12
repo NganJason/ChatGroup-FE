@@ -39,6 +39,15 @@ export interface GetUserInfoResponse {
   user_info?: User;
 }
 
+export interface SearchUsersRequest {
+  keyword?: string;
+}
+
+export interface SearchUsersResponse {
+  debug_msg?: string;
+  users?: User[];
+}
+
 export interface GetUserChannelsRequest {}
 
 export interface GetUserChannelsResponse {
@@ -252,6 +261,26 @@ class ChatGroup {
         throw new Error(err.response.data.debug_msg);
       }
 
+      throw err;
+    }
+  }
+
+  async searchUsers(
+    keyword: string
+  ): Promise<SearchUsersResponse> {
+    let url: string = this.baseUrl + "user/search"
+
+    try {
+      let resp = await axios.post(
+        url,
+        {
+          keyword: keyword,
+        },
+        { withCredentials: true }
+      )
+
+      return handleResp(resp)
+    } catch(err) {
       throw err;
     }
   }

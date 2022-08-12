@@ -1,7 +1,7 @@
 import { Select, Spin } from "antd";
-import axios from "axios";
 import lodash from "lodash";
 import React, { useMemo, useRef, useState } from "react";
+import { NewChatGroupService, User } from "../../../../_shared/apis/chat_group";
 
 function DebounceSelect({ fetchOptions= (input: any)=>{return new Promise(()=>{})}, debounceTimeout = 800, ...props }) {
   const [fetching, setFetching] = useState(false);
@@ -40,17 +40,17 @@ function DebounceSelect({ fetchOptions= (input: any)=>{return new Promise(()=>{}
 }
 
 async function fetchUserList(username: string): Promise<any> {
-  return axios
-    .post("http://localhost:8082/api/user/search", { keyword: username })
-    .then((resp) => {
-      
-      let users = resp.data.users
+  let service = NewChatGroupService()
 
-      return users.map((user: any) => ({
-        label: `${user.username}`,
-        value: user.user_id,
-      }));
-    })
+  return service.searchUsers(username)
+  .then((resp) => {
+    let users = resp.users
+
+    return users?.map((user: User) => ({
+      label: `${user.username}`,
+      value: user.user_id,
+    }))
+  })
 }
 
 type DebounceSelectInputProps = {

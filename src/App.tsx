@@ -13,6 +13,7 @@ import { useValidateAuthQuery } from './_shared/queries/chat_group';
 import { DataContext } from './_shared/hooks/dataContext';
 import { eventType, User } from './_shared/apis/chat_group';
 import { closeSocket, getSocket } from './_shared/apis/chat_group_socket';
+import { Spin } from 'antd';
 
 function App() {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ function App() {
   return (
     <div className="App">
       {isValidateAuthLoading ? (
-        <div>loading</div>
+        <div className="loading_screen"><Spin size="large"/></div>
       ) : (
         
           <Routes>
