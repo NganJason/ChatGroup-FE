@@ -151,7 +151,7 @@ class ChatGroup {
   baseUrl: string;
 
   constructor() {
-    this.baseUrl = "http://localhost:8082/api/";
+    this.baseUrl = process.env.REACT_APP_BACKEND_HOST || "";
   }
 
   async validateAuth(): Promise<ValidateAuthResponse> {

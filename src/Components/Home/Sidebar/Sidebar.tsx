@@ -55,7 +55,6 @@ const Sidebar = (): JSX.Element => {
     if ((event.target as HTMLInputElement).files) {
 
       if (event.target.files && event.target.files.length > 0) {
-        console.log(event.target.files[0]);
         const file = event.target.files[0]
         uploadImage(file)
       }

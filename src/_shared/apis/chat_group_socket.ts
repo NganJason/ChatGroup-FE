@@ -1,6 +1,6 @@
 import { w3cwebsocket, w3cwebsocket as W3CWebSocket } from "websocket";
 
-const baseUrl = "ws://localhost:8082/api/";
+const baseUrl = process.env.REACT_APP_SOCKET_HOST;
 
 var client: w3cwebsocket | undefined
 
