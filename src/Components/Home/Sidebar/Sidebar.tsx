@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { useQueryClient } from "react-query";
+
 
 import { Button } from "antd";
 import Channel from "./Channel/Channel";
@@ -11,8 +13,12 @@ import {
 
 import { ModalContext } from "../../../_shared/hooks/showModalContext";
 import { DataContext } from "../../../_shared/hooks/dataContext";
+import { useUploadImage } from "../../../_shared/mutations/chat_group";
+import { ChatGroupQueryKey } from "../../../_shared/queries/chat_group";
 
 const Sidebar = (): JSX.Element => {
+  const queryClient = useQueryClient();
+
   const { 
     showSidebarMenu, 
     toggleShowSidebarMenu, 
@@ -25,6 +31,16 @@ const Sidebar = (): JSX.Element => {
     setCurrChannel,
     currChannel,
   } = useContext(DataContext)
+
+  const {
+    mutate: uploadImage,
+  } = useUploadImage(
+    {
+      onSuccess: (): void => {
+        queryClient.invalidateQueries(ChatGroupQueryKey.VALIDATE_AUTH)
+      }
+    }
+  )
 
   const onChannelClick = (channelID: string) => {
     setCurrChannel(channelID);
@@ -40,6 +56,8 @@ const Sidebar = (): JSX.Element => {
 
       if (event.target.files && event.target.files.length > 0) {
         console.log(event.target.files[0]);
+        const file = event.target.files[0]
+        uploadImage(file)
       }
     }
   };

@@ -11,8 +11,8 @@ import {
   ChannelObj,
   CreateChannelRequest,
   CreateChannelResponse,
-  GetChannelMembersRequest,
   NewChatGroupService,
+  UploadImageResponse,
   User,
 } from "../apis/chat_group";
 
@@ -101,4 +101,23 @@ export const useCreateChannel = (
     };
 
     return useMutation(createChannelMutate, options);
+}
+
+export const useUploadImage = (
+  options?: UseMutationOptions<
+    string,
+    unknown,
+    File,
+    unknown
+  >
+) => {
+  const uploadImageMutate = async (file: File): Promise<string> => {
+    const service = NewChatGroupService();
+
+    const response: UploadImageResponse = await service.uploadImage(file);
+
+    return response.url ?? ""
+  };
+
+  return useMutation(uploadImageMutate, options)
 }

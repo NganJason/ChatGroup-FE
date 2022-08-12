@@ -21,14 +21,21 @@ const Message = (props: MessageProps): JSX.Element => {
 
     let isSender = user.user_id === msg.sender?.user_id;
 
+    const getProfileUrl = (): string => {
+      let defaultUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+
+      if (isSender) {
+        return user.photo_url || defaultUrl
+      }
+
+      return msg.sender?.photo_url || defaultUrl
+    }
+
   return (
     <div className={`message ${isSender && "sender"}`}>
       <div className="message__img">
         <img
-          src={
-            msg.sender?.photo_url ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          }
+          src={getProfileUrl()}
         />
       </div>
       <div className="message__content">
