@@ -90,6 +90,13 @@ export interface CreateMessageResponse {
   message?: Message;
 }
 
+export interface UploadImageRequest {}
+
+export interface UploadImageResponse {
+  debug_msg?: string;
+  url?: string;
+}
+
 export interface CreateSocketRequest {}
 
 export interface CreateSocketResponse {
@@ -144,7 +151,7 @@ class ChatGroup {
   baseUrl: string;
 
   constructor() {
-    this.baseUrl = "http://localhost:8082/api/";
+    this.baseUrl = process.env.REACT_APP_BACKEND_HOST || "";
   }
 
   async validateAuth(): Promise<ValidateAuthResponse> {
@@ -362,6 +369,31 @@ class ChatGroup {
       return handleResp(resp)
     } catch(err) {
       throw err;
+    }
+  }
+
+  async uploadImage(
+    file: File,
+  ): Promise<UploadImageResponse> {
+    let url: string = this.baseUrl + "user/upload_image"
+    let formData = new FormData();
+    formData.append("user_profile", file)
+
+    try {
+      let resp = await axios.post(
+        url,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      return handleResp(resp)
+    } catch(err) {
+      throw err
     }
   }
 }
